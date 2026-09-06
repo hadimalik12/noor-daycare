@@ -1,215 +1,611 @@
+"use client";
+
+import { useRef, useState, type KeyboardEvent } from "react";
+import {
+  ArrowDown,
+  ArrowRight,
+  ArrowUp,
+  Baby,
+  BookOpen,
+  Check,
+  ChevronDown,
+  Clock3,
+  Heart,
+  House,
+  MapPin,
+  Menu,
+  Moon,
+  Palette,
+  ShieldCheck,
+  Sprout,
+  Sun,
+  X,
+} from "lucide-react";
+
+const photos = {
+  room: "/images/playroom-preview.jpg",
+  outdoor: "/images/outdoor-preview.jpg",
+  art: "/images/art-preview.jpg",
+};
+
 const programs = [
   {
-    age: 'Infants',
-    range: '0-12 months',
-    detail: 'Gentle routines, naps, feeding support, and close attention in a small home setting.',
+    name: "Infants",
+    range: "0-12 months",
+    icon: Baby,
+    color: "pink",
+    title: "A gentle beginning.",
+    description:
+      "A small home setting for the earliest days of growing, with space for feeding, naps, and those first discoveries.",
+    details: [
+      "Comfort and connection",
+      "Room for individual routines",
+      "Gentle sensory exploration",
+    ],
+    note: "Talk with Naila about feeding, sleep routines, and what helps your baby feel at home.",
   },
   {
-    age: 'Toddlers',
-    range: '13 months - 2 years',
-    detail: 'Language, movement, sensory play, early independence, and steady daily rhythms.',
+    name: "Toddlers",
+    range: "13 months-2 years",
+    icon: Sprout,
+    color: "yellow",
+    title: "So much to discover.",
+    description:
+      "New words, little steps, and a growing sense of independence. Everyday play makes room for a toddler's natural curiosity.",
+    details: [
+      "Movement and sensory play",
+      "Songs, stories, and new words",
+      "Practice with everyday skills",
+    ],
+    note: "Talk with Naila about your toddler's routines, comfort items, and current stage of development.",
   },
   {
-    age: 'Preschool',
-    range: '3-4 years',
-    detail: 'Stories, counting, art, music, outdoor play, and school-readiness moments for curious learners.',
+    name: "Preschool",
+    range: "3-4 years",
+    icon: Palette,
+    color: "green",
+    title: "Big ideas. Little hands.",
+    description:
+      "Stories to imagine, colors to mix, and things to count. Play offers opportunities to create, make friends, and try something new.",
+    details: [
+      "Art and imaginative play",
+      "Early language and counting",
+      "Sharing and playing together",
+    ],
+    note: "Talk with Naila about your child's interests and the activities currently offered.",
   },
   {
-    age: 'School Age',
-    range: '5+ years',
-    detail: 'Before and after care in a familiar environment with room to rest, read, and play.',
+    name: "School age",
+    range: "5+ years",
+    icon: BookOpen,
+    color: "blue",
+    title: "A familiar place to land.",
+    description:
+      "A home environment with room for older children to unwind, read, and enjoy time with others.",
+    details: [
+      "Time to rest and recharge",
+      "Reading and creative activities",
+      "A mixed-age home setting",
+    ],
+    note: "Confirm school-age availability, care times, and any school transportation needs directly with Naila.",
+  },
+];
+const moments = [
+  {
+    time: "7:00 AM",
+    label: "Hello, day!",
+    icon: Sun,
+    title: "A little time to settle in.",
+    text: "An unhurried arrival, familiar toys, and quiet play can help children ease into the day.",
+    image: photos.room,
+    alt: "Preview of a bright home playroom with toys and books",
+  },
+  {
+    time: "9:00 AM",
+    label: "Make & discover",
+    icon: Palette,
+    title: "Where will curiosity take us?",
+    text: "Breakfast, stories, and creative play make room for new words, ideas, and discoveries.",
+    image: photos.art,
+    alt: "Preview of children painting together at a table",
+  },
+  {
+    time: "11:00 AM",
+    label: "Out we go",
+    icon: Sprout,
+    title: "A change of scenery.",
+    text: "Outdoor play when the weather allows, or an indoor activity to get little bodies moving.",
+    image: photos.outdoor,
+    alt: "Preview of an outdoor childcare play space",
+  },
+  {
+    time: "12:30 PM",
+    label: "Rest & recharge",
+    icon: Moon,
+    title: "A softer part of the day.",
+    text: "Lunch and a quieter rhythm, with rest and nap routines shaped around children's ages and needs.",
+    image: photos.room,
+    alt: "Preview of a home childcare room",
+  },
+  {
+    time: "3:30 PM",
+    label: "Play & goodbye",
+    icon: Heart,
+    title: "One more story before home.",
+    text: "A snack, time to play, and familiar routines as families begin to arrive. Care hours end at 6:00 PM.",
+    image: photos.art,
+    alt: "Preview of children sharing a creative activity",
+  },
+];
+const faqs = [
+  {
+    question: "What ages do you care for?",
+    answer:
+      "The program is listed as serving infants, toddlers, preschoolers, and school-age children. Openings depend on the current group, so confirm availability for your child's age before making plans.",
+  },
+  {
+    question: "What are the hours?",
+    answer:
+      "Listed care hours are 7:00 AM to 6:00 PM on weekdays. Full-time, full-year care is mentioned in public listings. Confirm holidays, closures, and the schedule available to your family with Naila.",
+  },
+  {
+    question: "Is this a licensed home daycare?",
+    answer:
+      "Yes. Ahmad, Naila is listed as a licensed Family Child Care Learning Home in Lawrenceville, Georgia. A visit is a good time to review the current license and discuss supervision and the spaces children use.",
+  },
+  {
+    question: "What about tuition, meals, and family support?",
+    answer:
+      "Public directories mention subsidies or vouchers, meal support through CACFP, and a multi-child discount. Ask Naila which options currently apply, what meals are included, and what your family's tuition would be.",
+  },
+  {
+    question: "What should I ask during a visit?",
+    answer:
+      "Ask about the daily routine, illness policy, backup care and closures, supervision across age groups, and which parts of the home children use. Share your child's routines and ask what to bring for their first day.",
   },
 ];
 
-const rhythms = [
-  ['7:00', 'Warm arrivals and quiet play'],
-  ['9:00', 'Breakfast, stories, and learning time'],
-  ['11:00', 'Outdoor play or creative activity'],
-  ['12:30', 'Lunch, rest, and nap routines'],
-  ['3:30', 'Snack, centers, and pickup window'],
-];
-
-const questions = [
-  'Which areas of the home do children use during care hours?',
-  'How are backup care and closures handled if the provider is away?',
-  'What symptoms require a child to stay home?',
-  'How is supervision maintained with different ages together?',
-];
-
-const parentHelps = [
-  'Full-time care',
-  'Full-year schedule',
-  'Subsidies and vouchers may be accepted',
-  'CACFP / meal support listed publicly',
-  'Multi-child discount listed publicly',
-  'English and Pakistani language support listed publicly',
-];
+function PreviewPhoto({
+  src,
+  alt,
+  className = "",
+}: {
+  src: string;
+  alt: string;
+  className?: string;
+}) {
+  return (
+    <figure className={`preview-photo ${className}`}>
+      <img src={src} alt={alt} loading="lazy" width="1000" height="750" />
+      <figcaption>Preview image</figcaption>
+    </figure>
+  );
+}
+function Brand() {
+  return (
+    <a
+      className="brand"
+      href="#top"
+      aria-label="Naila Ahmad Family Child Care home"
+    >
+      <span className="brand-mark">
+        <House size={27} strokeWidth={2.3} aria-hidden="true" />
+      </span>
+      <span>
+        <strong>Naila Ahmad</strong>
+        <small>Family Child Care</small>
+      </span>
+    </a>
+  );
+}
 
 export default function Home() {
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [programIndex, setProgramIndex] = useState(1);
+  const [momentIndex, setMomentIndex] = useState(0);
+  const menuButton = useRef<HTMLButtonElement>(null);
+  const program = programs[programIndex];
+  const moment = moments[momentIndex];
+
+  function selectMoment(index: number) {
+    setMomentIndex(index);
+    const tab = document.getElementById(`day-${index}`);
+    const list = tab?.parentElement;
+    if (tab && list) {
+      list.scrollTo({ left: tab.offsetLeft - (list.clientWidth - tab.offsetWidth) / 2 });
+    }
+  }
+
+  function tabKeys(
+    event: KeyboardEvent<HTMLButtonElement>,
+    index: number,
+    count: number,
+    select: (index: number) => void,
+    prefix: string,
+  ) {
+    let next = index;
+    if (event.key === "ArrowRight" || event.key === "ArrowDown")
+      next = (index + 1) % count;
+    else if (event.key === "ArrowLeft" || event.key === "ArrowUp")
+      next = (index - 1 + count) % count;
+    else if (event.key === "Home") next = 0;
+    else if (event.key === "End") next = count - 1;
+    else return;
+    event.preventDefault();
+    select(next);
+    document.getElementById(`${prefix}-${next}`)?.focus();
+  }
+
   return (
-    <main>
-      <header className="site-header">
-        <a className="brand" href="#top" aria-label="Naila Ahmad Family Child Care home">
-          <span className="brand-mark">N</span>
-          <span>
-            <strong>Naila Ahmad</strong>
-            <small>Family Child Care</small>
-          </span>
-        </a>
-        <nav aria-label="Primary navigation">
-          <a href="#programs">Programs</a>
-          <a href="#rhythm">Day</a>
-          <a href="#trust">Trust</a>
-          <a href="#contact">Contact</a>
+    <>
+      <a href="#main" className="skip-link">
+        Skip to content
+      </a>
+      <header
+        className="site-header"
+        onKeyDown={(event) => {
+          if (event.key === "Escape") {
+            setMenuOpen(false);
+            menuButton.current?.focus();
+          }
+        }}
+      >
+        <div className="header-inner">
+          <Brand />
+          <nav className="desktop-nav" aria-label="Main navigation">
+            <a href="#about">Our little home</a>
+            <a href="#programs">Ages & care</a>
+            <a href="#day">A day here</a>
+            <a href="#questions">Parent questions</a>
+          </nav>
+          <a className="button header-cta" href="#contact">
+            Let&apos;s meet <ArrowRight size={18} aria-hidden="true" />
+          </a>
+          <button
+            className="menu-toggle icon-button"
+            ref={menuButton}
+            aria-label={menuOpen ? "Close navigation" : "Open navigation"}
+            aria-expanded={menuOpen}
+            aria-controls="mobile-navigation"
+            onClick={() => setMenuOpen(!menuOpen)}
+          >
+            {menuOpen ? <X aria-hidden="true" /> : <Menu aria-hidden="true" />}
+          </button>
+        </div>
+        <nav
+          id="mobile-navigation"
+          className="mobile-nav"
+          aria-label="Mobile navigation"
+          hidden={!menuOpen}
+        >
+          {[
+            ["#about", "Our little home"],
+            ["#programs", "Ages & care"],
+            ["#day", "A day here"],
+            ["#questions", "Parent questions"],
+            ["#contact", "Let's meet"],
+          ].map(([href, label]) => (
+            <a key={href} href={href} onClick={() => setMenuOpen(false)}>
+              {label}
+              <ArrowRight size={18} aria-hidden="true" />
+            </a>
+          ))}
         </nav>
-        <a className="header-action" href="tel:17709782627">Call now</a>
       </header>
-
-      <section className="hero" id="top">
-        <div className="hero-copy">
-          <p className="eyebrow">Licensed home day care in Lawrenceville, GA</p>
-          <h1>A small, steady place for little children to feel known.</h1>
-          <p className="hero-lede">
-            Family child care for infants, toddlers, preschoolers, and school-age children,
-            with a small home-based setting and care from 7:00 AM to 6:00 PM.
-          </p>
-          <div className="hero-actions">
-            <a className="button primary" href="#contact">Schedule a visit</a>
-            <a className="button secondary" href="tel:17709782627">(770) 978-2627</a>
+      <main id="main">
+        <section className="hero" id="top" aria-labelledby="hero-title">
+          <img
+            className="hero-photo"
+            src={photos.room}
+            alt="Preview image of a home daycare playroom, not Naila's actual home"
+            width="1800"
+            height="1100"
+            fetchPriority="high"
+          />
+          <div className="hero-wash" />
+          <div className="container hero-content">
+            <p className="eyebrow">
+              <MapPin size={16} aria-hidden="true" /> Lawrenceville, Georgia
+            </p>
+            <h1 id="hero-title">
+              Naila Ahmad<span>Family Child Care</span>
+            </h1>
+            <p className="hero-tagline">
+              Little days.{" "}
+              <br />
+              Big discoveries.
+            </p>
+            <p className="hero-description">
+              A small home daycare for growing, playing,
+              <br className="desktop-break" /> and finding a little more
+              independence.
+            </p>
+            <a className="button button-red" href="#programs">
+              Find your little one&apos;s place{" "}
+              <ArrowRight size={20} aria-hidden="true" />
+            </a>
+            <a className="hero-scroll" href="#about">
+              <ArrowDown size={18} aria-hidden="true" /> Come on in
+            </a>
           </div>
-          <dl className="quick-facts" aria-label="Daycare quick facts">
+          <span className="hero-preview">Preview image</span>
+        </section>
+        <div className="facts-band">
+          <div className="container facts-inner">
+            <span>
+              <ShieldCheck aria-hidden="true" /> Licensed family child care
+            </span>
+            <span>
+              <Clock3 aria-hidden="true" /> 7:00 AM - 6:00 PM
+            </span>
+            <span>
+              <Heart aria-hidden="true" /> Infants through school age
+            </span>
+          </div>
+        </div>
+        <section className="section about-section" id="about">
+          <div className="container about-grid">
+            <div className="about-photo-wrap">
+              <PreviewPhoto
+                src={photos.art}
+                alt="Preview of young children exploring paint at a table"
+              />
+              <p className="photo-note">Room for a little wonder.</p>
+            </div>
+            <div className="about-copy">
+              <p className="eyebrow">Our little home</p>
+              <h2>
+                Small setting.
+                <br />
+                <span className="text-red">A world of possibility.</span>
+              </h2>
+              <p>
+                There&apos;s something special about growing up in a home
+                setting. Familiar spaces, a smaller group, and everyday moments
+                to learn together.
+              </p>
+              <p>
+                Naila Ahmad Family Child Care is a licensed home daycare in
+                Lawrenceville, welcoming children from infancy through school
+                age.
+              </p>
+              <div className="about-detail">
+                <House aria-hidden="true" />
+                <span>
+                  <strong>Home is where we begin.</strong>
+                  <br />A Family Child Care Learning Home in your community.
+                </span>
+              </div>
+              <a className="text-link" href="#questions">
+                Get to know the basics{" "}
+                <ArrowRight size={18} aria-hidden="true" />
+              </a>
+            </div>
+          </div>
+        </section>
+        <section className="section programs-section" id="programs">
+          <div className="container">
+            <div className="section-heading">
+              <p className="eyebrow">Little people, different stages</p>
+              <h2>Growing at their own pace.</h2>
+              <p>
+                From first discoveries to school-day stories, there&apos;s a lot
+                of growing to do.
+              </p>
+            </div>
+            <div className="age-tabs" role="tablist" aria-label="Age groups">
+              {programs.map((item, index) => {
+                const Icon = item.icon;
+                return (
+                  <button
+                    key={item.name}
+                    type="button"
+                    role="tab"
+                    id={`age-${index}`}
+                    aria-controls="age-panel"
+                    aria-selected={programIndex === index}
+                    tabIndex={programIndex === index ? 0 : -1}
+                    className={`age-tab ${item.color}`}
+                    onClick={() => setProgramIndex(index)}
+                    onKeyDown={(e) =>
+                      tabKeys(e, index, programs.length, setProgramIndex, "age")
+                    }
+                  >
+                    <Icon size={30} aria-hidden="true" />
+                    <span>
+                      <strong>{item.name}</strong>
+                      <small>{item.range}</small>
+                    </span>
+                    <ArrowDown
+                      className="tab-arrow"
+                      size={18}
+                      aria-hidden="true"
+                    />
+                  </button>
+                );
+              })}
+            </div>
+            <div
+              className={`age-panel ${program.color}`}
+              role="tabpanel"
+              id="age-panel"
+              aria-labelledby={`age-${programIndex}`}
+              tabIndex={0}
+              key={programIndex}
+            >
+              <div>
+                <p className="eyebrow">
+                  {program.name} / {program.range}
+                </p>
+                <h3>{program.title}</h3>
+                <p>{program.description}</p>
+              </div>
+              <div className="age-details">
+                <ul>
+                  {program.details.map((detail) => (
+                    <li key={detail}>
+                      <Check size={18} aria-hidden="true" />
+                      {detail}
+                    </li>
+                  ))}
+                </ul>
+                <p>{program.note}</p>
+              </div>
+            </div>
+          </div>
+        </section>
+        <section className="section day-section" id="day">
+          <div className="container">
+            <div className="day-heading">
+              <div>
+                <p className="eyebrow">A day here</p>
+                <h2>
+                  A little play.
+                  <br />
+                  <span className="text-blue">
+                    A little rest. A lot of growing.
+                  </span>
+                </h2>
+              </div>
+              <p>
+                An example of how a day might unfold. Routines flex with
+                children&apos;s ages, naps, and the weather.
+              </p>
+            </div>
+            <div
+              className="day-tabs"
+              role="tablist"
+              aria-label="Example daily routine"
+            >
+              {moments.map((item, index) => {
+                const Icon = item.icon;
+                return (
+                  <button
+                    role="tab"
+                    type="button"
+                    key={item.time}
+                    id={`day-${index}`}
+                    aria-controls="day-panel"
+                    aria-selected={momentIndex === index}
+                    tabIndex={momentIndex === index ? 0 : -1}
+                    onClick={() => selectMoment(index)}
+                    onKeyDown={(e) =>
+                      tabKeys(e, index, moments.length, selectMoment, "day")
+                    }
+                  >
+                    <Icon size={24} aria-hidden="true" />
+                    <span>
+                      <small>{item.time}</small>
+                      <strong>{item.label}</strong>
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
+            <div
+              className="day-panel"
+              role="tabpanel"
+              id="day-panel"
+              aria-labelledby={`day-${momentIndex}`}
+              tabIndex={0}
+              key={momentIndex}
+            >
+              <PreviewPhoto src={moment.image} alt={moment.alt} />
+              <div className="day-story">
+                <p className="eyebrow">{moment.time}</p>
+                <h3>{moment.title}</h3>
+                <p>{moment.text}</p>
+                <div className="day-step-controls">
+                  <span>
+                    {momentIndex + 1} of {moments.length} moments
+                  </span>
+                  <button
+                    className="icon-button"
+                    aria-label="Next moment"
+                    title="Next moment"
+                    onClick={() =>
+                      selectMoment((momentIndex + 1) % moments.length)
+                    }
+                  >
+                    <ArrowRight aria-hidden="true" />
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+        <section className="section questions-section" id="questions">
+          <div className="container questions-grid">
             <div>
-              <dt>Setting</dt>
-              <dd>Small home care</dd>
+              <p className="eyebrow">For the grown-ups</p>
+              <h2>
+                Little questions.
+                <br />
+                Big decisions.
+              </h2>
+              <p>
+                Choosing care is personal.
+                <br />
+                Here are a few things to start with.
+              </p>
+              <Heart
+                className="questions-heart"
+                size={64}
+                strokeWidth={1.6}
+                aria-hidden="true"
+              />
             </div>
-            <div>
-              <dt>Hours</dt>
-              <dd>7 AM - 6 PM</dd>
+            <div className="faq-list">
+              {faqs.map((faq) => (
+                <details key={faq.question}>
+                  <summary>
+                    {faq.question}
+                    <ChevronDown size={21} aria-hidden="true" />
+                  </summary>
+                  <p>{faq.answer}</p>
+                </details>
+              ))}
             </div>
-            <div>
-              <dt>Record</dt>
-              <dd>Licensed home</dd>
-            </div>
-          </dl>
-        </div>
-
-        <div className="hero-visual" aria-label="Placeholder for daycare photos">
-          <div className="photo-card main-photo">
-            <span>Future photo</span>
-            <strong>Play room</strong>
           </div>
-          <div className="photo-card small-photo">
-            <span>Future photo</span>
-            <strong>Outdoor time</strong>
-          </div>
-          <div className="capacity-badge">
-            <span>Licensed</span>
-            <strong>Family Child Care Learning Home</strong>
-          </div>
-        </div>
-      </section>
-
-      <section className="intro-band" id="trust">
-        <div>
-          <p className="section-kicker">Compliance snapshot</p>
-          <h2>Trust starts with clear basics.</h2>
-        </div>
-          <p>
-            Ahmad, Naila is listed as a licensed Family Child Care Learning Home in
-            Lawrenceville, Georgia. Public childcare directories describe the program as a
-            home-based daycare serving infants through school-age children, with full-time
-            care and weekday hours from 7:00 AM to 6:00 PM.
-          </p>
-      </section>
-
-      <section className="section" id="programs">
-        <div className="section-heading">
-          <p className="section-kicker">Ages served</p>
-          <h2>Care that fits each stage.</h2>
-        </div>
-        <div className="program-grid">
-          {programs.map((program) => (
-            <article className="program-card" key={program.age}>
-              <p>{program.range}</p>
-              <h3>{program.age}</h3>
-              <span>{program.detail}</span>
-            </article>
-          ))}
-        </div>
-      </section>
-
-      <section className="rhythm-section" id="rhythm">
-        <div className="rhythm-copy">
-          <p className="section-kicker">Daily rhythm</p>
-          <h2>Predictable days help children settle in.</h2>
-          <p>
-            The exact schedule can shift with age, naps, weather, and family needs, but the
-            day is designed around calm transitions, play, meals, rest, and connection.
-          </p>
-        </div>
-        <div className="timeline" aria-label="Example daily schedule">
-          {rhythms.map(([time, label]) => (
-            <div className="timeline-row" key={time}>
-              <strong>{time}</strong>
-              <span>{label}</span>
+        </section>
+        <section className="contact-section" id="contact">
+          <div className="container contact-inner">
+            <p className="eyebrow">Your family&apos;s next chapter</p>
+            <h2>It starts with a hello.</h2>
+            <p>
+              A visit is the best way to see whether our little home
+              <br className="desktop-break" /> feels like the right fit for your
+              family.
+            </p>
+            <div className="contact-status">
+              <Heart size={20} aria-hidden="true" />
+              <span>Contact details coming soon</span>
             </div>
-          ))}
+            <span className="contact-location">
+              <MapPin size={16} aria-hidden="true" /> Lawrenceville, Georgia
+            </span>
+          </div>
+        </section>
+      </main>
+      <footer className="site-footer">
+        <div className="container footer-top">
+          <Brand />
+          <nav aria-label="Footer navigation">
+            <a href="#programs">Ages & care</a>
+            <a href="#day">A day here</a>
+            <a href="#questions">Parent questions</a>
+          </nav>
+          <a className="back-top" href="#top">
+            Back to top <ArrowUp size={18} aria-hidden="true" />
+          </a>
         </div>
-      </section>
-
-      <section className="section help-section">
-        <div className="section-heading">
-          <p className="section-kicker">Family support</p>
-          <h2>Practical details parents usually ask about.</h2>
-          <p>
-            Public listings mention several family-friendly supports. These should be
-            confirmed directly during a call or tour because availability can change.
-          </p>
+        <div className="container footer-bottom">
+          <span>
+            &copy; {new Date().getFullYear()} Naila Ahmad Family Child Care
+          </span>
+          <span>Photos are previews, not the actual daycare.</span>
         </div>
-        <div className="help-grid">
-          {parentHelps.map((help) => (
-            <div className="help-item" key={help}>{help}</div>
-          ))}
-        </div>
-      </section>
-
-      <section className="section visit-section">
-        <div className="visit-card">
-          <p className="section-kicker">For your tour</p>
-          <h2>Helpful questions to bring with you.</h2>
-          <ul>
-            {questions.map((question) => (
-              <li key={question}>{question}</li>
-            ))}
-          </ul>
-        </div>
-        <div className="placeholder-stack" aria-hidden="true">
-          <div className="stack-photo top">Future photo</div>
-          <div className="stack-photo bottom">Future photo</div>
-        </div>
-      </section>
-
-      <section className="contact-section" id="contact">
-        <div>
-          <p className="section-kicker">Contact</p>
-          <h2>Ask about availability or schedule a visit.</h2>
-          <p>
-            Call to confirm openings, tour times, rates, and whether the current age mix is
-            a good fit for your child.
-          </p>
-        </div>
-        <address>
-          <strong>Naila Ahmad Family Child Care</strong>
-          <span>2190 Primrose Place Lane</span>
-          <span>Lawrenceville, GA 30044</span>
-          <a href="tel:17709782627">(770) 978-2627</a>
-        </address>
-      </section>
-
-      <footer>
-        <p>Naila Ahmad Family Child Care</p>
-        <p>Licensed home day care serving Lawrenceville families.</p>
       </footer>
-    </main>
+    </>
   );
 }
