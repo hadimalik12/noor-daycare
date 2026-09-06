@@ -1,12 +1,13 @@
 "use client";
 
-import { useRef, useState, type KeyboardEvent } from "react";
+import { useEffect, useRef, useState, type KeyboardEvent } from "react";
 import {
   ArrowDown,
   ArrowRight,
   ArrowUp,
   Baby,
   BookOpen,
+  CalendarDays,
   Check,
   ChevronDown,
   Clock3,
@@ -203,16 +204,45 @@ export default function Home() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [programIndex, setProgramIndex] = useState(1);
   const [momentIndex, setMomentIndex] = useState(0);
+  const [showVisitDock, setShowVisitDock] = useState(false);
   const menuButton = useRef<HTMLButtonElement>(null);
+  const heroVisitLink = useRef<HTMLAnchorElement>(null);
+  const visitSection = useRef<HTMLElement>(null);
   const program = programs[programIndex];
   const moment = moments[momentIndex];
+
+  useEffect(() => {
+    const heroLink = heroVisitLink.current;
+    const contact = visitSection.current;
+    if (!heroLink || !contact) return;
+    let heroPassed = false;
+    let contactReached = false;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.target === heroLink)
+            heroPassed = entry.boundingClientRect.bottom < 90;
+          if (entry.target === contact)
+            contactReached =
+              entry.isIntersecting || entry.boundingClientRect.bottom < 0;
+        }
+        setShowVisitDock(heroPassed && !contactReached);
+      },
+      { rootMargin: "-90px 0px 0px 0px", threshold: 0 },
+    );
+    observer.observe(heroLink);
+    observer.observe(contact);
+    return () => observer.disconnect();
+  }, []);
 
   function selectMoment(index: number) {
     setMomentIndex(index);
     const tab = document.getElementById(`day-${index}`);
     const list = tab?.parentElement;
     if (tab && list) {
-      list.scrollTo({ left: tab.offsetLeft - (list.clientWidth - tab.offsetWidth) / 2 });
+      list.scrollTo({
+        left: tab.offsetLeft - (list.clientWidth - tab.offsetWidth) / 2,
+      });
     }
   }
 
@@ -259,7 +289,7 @@ export default function Home() {
             <a href="#questions">Parent questions</a>
           </nav>
           <a className="button header-cta" href="#contact">
-            Let&apos;s meet <ArrowRight size={18} aria-hidden="true" />
+            <CalendarDays size={18} aria-hidden="true" /> Schedule a visit
           </a>
           <button
             className="menu-toggle icon-button"
@@ -283,7 +313,7 @@ export default function Home() {
             ["#programs", "Ages & care"],
             ["#day", "A day here"],
             ["#questions", "Parent questions"],
-            ["#contact", "Let's meet"],
+            ["#contact", "Schedule a visit"],
           ].map(([href, label]) => (
             <a key={href} href={href} onClick={() => setMenuOpen(false)}>
               {label}
@@ -311,8 +341,7 @@ export default function Home() {
               Naila Ahmad<span>Family Child Care</span>
             </h1>
             <p className="hero-tagline">
-              Little days.{" "}
-              <br />
+              Little days. <br />
               Big discoveries.
             </p>
             <p className="hero-description">
@@ -320,12 +349,19 @@ export default function Home() {
               <br className="desktop-break" /> and finding a little more
               independence.
             </p>
-            <a className="button button-red" href="#programs">
-              Find your little one&apos;s place{" "}
+            <a
+              className="button button-red hero-visit"
+              href="#contact"
+              ref={heroVisitLink}
+            >
+              <CalendarDays size={20} aria-hidden="true" /> Schedule a visit
               <ArrowRight size={20} aria-hidden="true" />
             </a>
+            <p className="visit-reassurance">
+              Meet Naila, see the space, and ask your questions.
+            </p>
             <a className="hero-scroll" href="#about">
-              <ArrowDown size={18} aria-hidden="true" /> Come on in
+              <ArrowDown size={18} aria-hidden="true" /> Explore our little home
             </a>
           </div>
           <span className="hero-preview">Preview image</span>
@@ -452,6 +488,15 @@ export default function Home() {
                 <p>{program.note}</p>
               </div>
             </div>
+            <div className="program-visit">
+              <p>
+                Wondering if we&apos;re the right fit?{" "}
+                <strong>Let&apos;s meet.</strong>
+              </p>
+              <a className="button button-red" href="#contact">
+                <CalendarDays size={18} aria-hidden="true" /> Schedule a visit
+              </a>
+            </div>
           </div>
         </section>
         <section className="section day-section" id="day">
@@ -568,22 +613,55 @@ export default function Home() {
             </div>
           </div>
         </section>
-        <section className="contact-section" id="contact">
-          <div className="container contact-inner">
-            <p className="eyebrow">Your family&apos;s next chapter</p>
-            <h2>It starts with a hello.</h2>
-            <p>
-              A visit is the best way to see whether our little home
-              <br className="desktop-break" /> feels like the right fit for your
-              family.
-            </p>
-            <div className="contact-status">
-              <Heart size={20} aria-hidden="true" />
-              <span>Contact details coming soon</span>
+        <section className="contact-section" id="contact" ref={visitSection}>
+          <div className="container contact-layout">
+            <div className="contact-inner">
+              <p className="eyebrow">Your family&apos;s next chapter</p>
+              <h2>It starts with a hello.</h2>
+              <p>
+                A visit is the best way to see whether our little home feels
+                like the right fit for your family.
+              </p>
+              <ul className="visit-expectations">
+                <li>
+                  <Check size={18} aria-hidden="true" /> Meet Naila and get to
+                  know the daycare
+                </li>
+                <li>
+                  <Check size={18} aria-hidden="true" /> Talk about your
+                  child&apos;s routines and needs
+                </li>
+                <li>
+                  <Check size={18} aria-hidden="true" /> Ask about openings,
+                  care hours, and tuition
+                </li>
+              </ul>
+              <span className="contact-location">
+                <MapPin size={16} aria-hidden="true" /> Lawrenceville, Georgia
+              </span>
             </div>
-            <span className="contact-location">
-              <MapPin size={16} aria-hidden="true" /> Lawrenceville, Georgia
-            </span>
+            <div
+              className="visit-booking"
+              aria-labelledby="visit-booking-title"
+            >
+              <CalendarDays size={32} aria-hidden="true" />
+              <h3 id="visit-booking-title">Schedule a visit</h3>
+              <p>We&apos;d love to meet your family.</p>
+              <div className="booking-placeholder">
+                <strong>Online scheduling coming soon</strong>
+                <p>
+                  You&apos;ll be able to arrange a visit here once booking
+                  opens.
+                </p>
+              </div>
+              <button
+                className="button booking-unavailable"
+                type="button"
+                disabled
+              >
+                <CalendarDays size={18} aria-hidden="true" /> Booking opens soon
+              </button>
+            </div>
           </div>
         </section>
       </main>
@@ -591,6 +669,7 @@ export default function Home() {
         <div className="container footer-top">
           <Brand />
           <nav aria-label="Footer navigation">
+            <a href="#contact">Schedule a visit</a>
             <a href="#programs">Ages & care</a>
             <a href="#day">A day here</a>
             <a href="#questions">Parent questions</a>
@@ -606,6 +685,12 @@ export default function Home() {
           <span>Photos are previews, not the actual daycare.</span>
         </div>
       </footer>
+      <div className="mobile-visit-dock" hidden={!showVisitDock || menuOpen}>
+        <span>Come say hello.</span>
+        <a className="button button-red" href="#contact">
+          <CalendarDays size={18} aria-hidden="true" /> Schedule a visit
+        </a>
+      </div>
     </>
   );
 }
