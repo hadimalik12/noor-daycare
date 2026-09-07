@@ -1,204 +1,158 @@
 "use client";
 
-import { useEffect, useRef, useState, type KeyboardEvent } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   ArrowDown,
   ArrowRight,
   ArrowUp,
   Baby,
-  Backpack,
-  Blocks,
   BookOpen,
-  Apple,
   CalendarDays,
   Check,
   ChevronDown,
   Clock3,
   Heart,
-  Hand,
-  Footprints,
   House,
   MapPin,
   Menu,
   Moon,
-  Music,
   Palette,
   ShieldCheck,
   Sprout,
   Sun,
-  Sparkles,
-  Toilet,
-  Utensils,
+  Users,
   X,
 } from "lucide-react";
 import { CalendlyBooking, BOOKING_URL } from "./calendly-booking";
 import { PhoneContact } from "./phone-contact";
-import { PhotoStack } from "./photo-stack";
 import { goToPageTop, resetInitialScroll } from "./scroll-navigation";
 
-const photos = {
-  room: "/images/playroom-preview.jpg",
-  outdoor: "/images/outdoor-preview.jpg",
-  art: "/images/art-preview.jpg",
-};
+const navigation = [
+  ["#about", "Why Noor"],
+  ["#programs", "Ages & care"],
+  ["#day", "A day at Noor"],
+  ["#contact", "Visit & questions"],
+];
 
 const programs = [
   {
     name: "Infants",
-    range: "8 weeks-12 months",
+    range: "8 weeks–12 months",
     icon: Baby,
     color: "pink",
-    title: "A gentle beginning.",
+    title: "Comfort comes first.",
     description:
-      "A small home setting for the earliest days of growing, with space for feeding, naps, and those first discoveries.",
+      "Leaving your baby in someone else's care is a big step. A small, familiar setting makes room for comforting care and the feeding and sleep routines you share with us.",
     details: [
-      "Comfort and connection",
-      "Room for individual routines",
-      "Gentle sensory exploration",
+      "Time for cuddles and connection",
+      "Gentle sensory play and first discoveries",
+      "Care shaped around your baby's routine",
     ],
-    note: "Talk with Naila about feeding, sleep routines, and what helps your baby feel at home.",
   },
   {
     name: "Toddlers",
-    range: "13 months-2 years",
+    range: "13 months–2 years",
     icon: Sprout,
     color: "yellow",
-    title: "So much to discover.",
+    title: "Room to try “I can!”",
     description:
-      "New words, little steps, and a growing sense of independence. Everyday play makes room for a toddler's natural curiosity.",
+      "Little feet need room to move. Songs, stories, and everyday play help your toddler find new words, explore safely, and practice doing things for themselves.",
     details: [
-      "Movement and sensory play",
-      "Songs, stories, and new words",
-      "Practice with everyday skills",
+      "Movement, music, and hands-on play",
+      "Language and everyday independence",
+      "Patient potty training support when ready",
     ],
-    note: "Talk with Naila about your toddler's routines, comfort items, and current stage of development.",
   },
   {
     name: "Preschoolers",
-    range: "3-4 years",
+    range: "3–4 years",
     icon: Palette,
     color: "green",
-    title: "Big ideas. Little hands.",
+    title: "Growing ready, through play.",
     description:
-      "Stories to imagine, colors to mix, and things to count. Play offers opportunities to create, make friends, and try something new.",
+      "Your child's big ideas belong here. Art, stories, counting, and social play give preschoolers everyday opportunities to create, make friends, and build confidence.",
     details: [
-      "Art and imaginative play",
-      "Early language and counting",
-      "Sharing and playing together",
+      "Art, stories, and early counting",
+      "Taking turns and playing together",
+      "Potty training and self-care support",
     ],
-    note: "Talk with Naila about your child's interests and the activities currently offered.",
-  },
-];
-const moments = [
-  {
-    time: "From 7:30 AM",
-    label: "Welcome in",
-    icon: Sun,
-    title: "A happy start to the day.",
-    activities: [
-      { label: "Welcome & arrival", icon: Hand },
-      { label: "Handwashing & breakfast", icon: Utensils },
-    ],
-    image: photos.room,
-    alt: "Preview of a bright home playroom with toys and books",
-  },
-  {
-    time: "Morning",
-    label: "Make & discover",
-    icon: Palette,
-    title: "Songs, stories, and little discoveries.",
-    activities: [
-      { label: "Circle time & music", icon: Music },
-      { label: "Bathroom break", icon: Toilet },
-      { label: "Art, writing & fine motor skills", icon: Palette },
-      { label: "Free play & centers", icon: Blocks },
-    ],
-    image: photos.art,
-    alt: "Preview of children painting together at a table",
-  },
-  {
-    time: "Midday",
-    label: "Rest & recharge",
-    icon: Moon,
-    title: "A softer part of the day.",
-    activities: [
-      { label: "Handwashing & lunch", icon: Utensils },
-      { label: "Nap & quiet time", icon: Moon },
-    ],
-    image: photos.room,
-    alt: "Preview of a home childcare room",
-  },
-  {
-    time: "Afternoon",
-    label: "Snack & move",
-    icon: Sprout,
-    title: "Refuel, stretch, and play.",
-    activities: [
-      { label: "Bathroom break", icon: Toilet },
-      { label: "Handwashing & snack", icon: Apple },
-      { label: "Recess & gross motor play", icon: Footprints },
-    ],
-    image: photos.outdoor,
-    alt: "Preview of an outdoor childcare play space",
-  },
-  {
-    time: "Until 6:00 PM",
-    label: "Play & goodbye",
-    icon: Heart,
-    title: "One more story before home.",
-    activities: [
-      { label: "Reading & story time", icon: BookOpen },
-      { label: "Free play & clean-up", icon: Sparkles },
-      { label: "Pack-up & dismissal", icon: Backpack },
-    ],
-    image: photos.art,
-    alt: "Preview of children sharing a creative activity",
-  },
-];
-const faqs = [
-  {
-    question: "What ages do you care for?",
-    answer:
-      "Noor Daycare welcomes children from 8 weeks through 4 years old. Our age groups include infants, toddlers, and preschoolers. Openings depend on the current group, so ask about availability for your child's age when you schedule a visit.",
-  },
-  {
-    question: "What are the hours?",
-    answer:
-      "Noor Daycare is open from 7:30 AM to 6:00 PM on weekdays. Confirm holidays, closures, and the schedule available to your family with Naila during your visit.",
-  },
-  {
-    question: "Is this a licensed home daycare?",
-    answer:
-      "Yes. Noor Daycare is run by Naila Ahmad, who is listed as a licensed Family Child Care Learning Home provider under Ahmad, Naila in Lawrenceville, Georgia. A visit is a good time to review the current license and discuss supervision and the spaces children use.",
-  },
-  {
-    question: "What should I ask during a visit?",
-    answer:
-      "Ask about the daily routine, illness policy, backup care and closures, supervision across age groups, and which parts of the home children use. Share your child's routines and ask what to bring for their first day.",
   },
 ];
 
-function PreviewPhoto({
-  src,
-  alt,
-  className = "",
-}: {
-  src: string;
-  alt: string;
-  className?: string;
-}) {
-  return (
-    <figure className={`preview-photo ${className}`}>
-      <img src={src} alt={alt} loading="lazy" width="1000" height="750" />
-      <figcaption>Preview image</figcaption>
-    </figure>
-  );
-}
+const moments = [
+  {
+    time: "From 7:30 AM",
+    title: "A warm welcome",
+    icon: Sun,
+    color: "yellow",
+    description:
+      "Arrival, a little time to settle in, then handwashing and breakfast.",
+  },
+  {
+    time: "Morning",
+    title: "Make, sing & discover",
+    icon: Palette,
+    color: "pink",
+    description:
+      "Circle time, music, stories, and a bathroom break. Then art, early writing, fine motor activities, and free play.",
+  },
+  {
+    time: "Midday",
+    title: "Lunch, then a little rest",
+    icon: Moon,
+    color: "blue",
+    description:
+      "Handwashing and lunch, followed by a nap or quiet time to rest and recharge.",
+  },
+  {
+    time: "Afternoon",
+    title: "Snack, fresh air & play",
+    icon: Sprout,
+    color: "green",
+    description:
+      "A bathroom break, handwashing, and a snack. Then outdoor play in the play area, with slides, swings, and room to move.",
+  },
+  {
+    time: "Until 6:00 PM",
+    title: "One more story, then home",
+    icon: BookOpen,
+    color: "yellow",
+    description:
+      "Reading, stories, and free play before we tidy up, pack up, and say goodbye at pickup.",
+  },
+];
+
+const faqs = [
+  {
+    question: "What ages do you care for?",
+    answer: "Infants, toddlers, and preschoolers from 8 weeks through 4 years.",
+  },
+  {
+    question: "What are your hours?",
+    answer: "Monday through Friday, 7:30 AM to 6:00 PM.",
+  },
+  {
+    question: "Is Noor licensed?",
+    answer:
+      "Yes, through Bright from the Start. Credentials include CDA certification, CPR, and First Aid. Our home daycare has a capacity of 6 children.",
+  },
+  {
+    question: "Are meals and snacks part of the day?",
+    answer:
+      "Breakfast, lunch, and a snack are part of our routine. Please share any allergies or feeding needs with us.",
+  },
+  {
+    question: "Do you help with potty training?",
+    answer:
+      "Yes. We offer patient support when your child is ready and coordinate with your routine at home.",
+  },
+];
+
 function Brand({ onHome }: { onHome?: () => void }) {
   return (
     <a
       className="brand"
-      href="/"
+      href="#top"
       aria-label="Noor Daycare home"
       onClick={(event) => {
         if (goToPageTop(event)) onHome?.();
@@ -217,14 +171,10 @@ function Brand({ onHome }: { onHome?: () => void }) {
 
 export default function Home() {
   const [menuOpen, setMenuOpen] = useState(false);
-  const [programIndex, setProgramIndex] = useState(1);
-  const [momentIndex, setMomentIndex] = useState(0);
   const [showVisitDock, setShowVisitDock] = useState(false);
   const menuButton = useRef<HTMLButtonElement>(null);
   const heroVisitLink = useRef<HTMLAnchorElement>(null);
-  const visitSection = useRef<HTMLElement>(null);
-  const program = programs[programIndex];
-  const moment = moments[momentIndex];
+  const bookingPanel = useRef<HTMLDivElement>(null);
 
   useEffect(resetInitialScroll, []);
 
@@ -234,7 +184,7 @@ export default function Home() {
   }
 
   useEffect(() => {
-    const desktop = window.matchMedia("(min-width: 901px)");
+    const desktop = window.matchMedia("(min-width: 1101px)");
     const closeOnDesktop = () => {
       if (desktop.matches) setMenuOpen(false);
     };
@@ -244,7 +194,7 @@ export default function Home() {
 
   useEffect(() => {
     const heroLink = heroVisitLink.current;
-    const contact = visitSection.current;
+    const contact = bookingPanel.current;
     if (!heroLink || !contact) return;
     let heroPassed = false;
     let contactVisible = false;
@@ -264,30 +214,6 @@ export default function Home() {
     return () => observer.disconnect();
   }, []);
 
-  function selectMoment(index: number) {
-    setMomentIndex(index);
-  }
-
-  function tabKeys(
-    event: KeyboardEvent<HTMLButtonElement>,
-    index: number,
-    count: number,
-    select: (index: number) => void,
-    prefix: string,
-  ) {
-    let next = index;
-    if (event.key === "ArrowRight" || event.key === "ArrowDown")
-      next = (index + 1) % count;
-    else if (event.key === "ArrowLeft" || event.key === "ArrowUp")
-      next = (index - 1 + count) % count;
-    else if (event.key === "Home") next = 0;
-    else if (event.key === "End") next = count - 1;
-    else return;
-    event.preventDefault();
-    select(next);
-    document.getElementById(`${prefix}-${next}`)?.focus();
-  }
-
   return (
     <>
       <a href="#main" className="skip-link">
@@ -302,37 +228,37 @@ export default function Home() {
             setMenuOpen(false);
         }}
         onKeyDown={(event) => {
-          if (event.key === "Escape") {
-            closeMenu();
-          }
+          if (event.key === "Escape" && menuOpen) closeMenu();
         }}
       >
         <div className="header-inner">
           <Brand onHome={() => setMenuOpen(false)} />
           <nav className="desktop-nav" aria-label="Main navigation">
-            <a href="#about">Our little home</a>
-            <a href="#programs">Ages & care</a>
-            <a href="#day">A day here</a>
-            <a href="#questions">Parent questions</a>
+            {navigation.map(([href, label]) => (
+              <a href={href} key={href}>
+                {label}
+              </a>
+            ))}
           </nav>
           <a
-            className="button header-cta"
+            className="button button-red header-cta"
             href={BOOKING_URL}
             target="_blank"
             rel="noopener noreferrer"
           >
-            <CalendarDays size={18} aria-hidden="true" /> Schedule a visit
+            <CalendarDays size={18} aria-hidden="true" />
+            Schedule a visit
           </a>
           <button
             className="menu-toggle icon-button"
+            type="button"
             ref={menuButton}
             aria-label={menuOpen ? "Close navigation" : "Open navigation"}
             aria-expanded={menuOpen}
             aria-controls="mobile-navigation"
             onClick={() => setMenuOpen(!menuOpen)}
           >
-            <Menu className="menu-open-icon" aria-hidden="true" />
-            <X className="menu-close-icon" aria-hidden="true" />
+            {menuOpen ? <X aria-hidden="true" /> : <Menu aria-hidden="true" />}
           </button>
         </div>
         <div
@@ -353,352 +279,386 @@ export default function Home() {
             className="mobile-nav"
             aria-label="Mobile navigation"
           >
-            {[
-              [BOOKING_URL, "Schedule a visit"],
-              ["#about", "Our little home"],
-              ["#programs", "Ages & care"],
-              ["#day", "A day here"],
-              ["#questions", "Parent questions"],
-            ].map(([href, label]) => (
-              <a
-                key={href}
-                href={href}
-                target={href === BOOKING_URL ? "_blank" : undefined}
-                rel={href === BOOKING_URL ? "noopener noreferrer" : undefined}
-                onClick={closeMenu}
-              >
-                {label}
-                <ArrowRight size={18} aria-hidden="true" />
-              </a>
-            ))}
+            {[[BOOKING_URL, "Schedule a visit"], ...navigation].map(
+              ([href, label]) => (
+                <a
+                  key={href}
+                  href={href}
+                  target={href === BOOKING_URL ? "_blank" : undefined}
+                  rel={href === BOOKING_URL ? "noopener noreferrer" : undefined}
+                  onClick={closeMenu}
+                >
+                  {label}
+                  <ArrowRight size={18} aria-hidden="true" />
+                </a>
+              ),
+            )}
           </nav>
         </div>
       </header>
-      <main id="main">
+
+      <main id="main" tabIndex={-1}>
         <section className="hero" aria-labelledby="hero-title">
-          <img
-            className="hero-photo"
-            src={photos.room}
-            alt="Preview image of a home daycare playroom, not Naila's actual home"
-            width="1800"
-            height="1100"
-            fetchPriority="high"
-          />
-          <div className="hero-wash" />
-          <div className="container hero-content">
-            <p className="eyebrow">
-              <MapPin size={16} aria-hidden="true" /> Lawrenceville, Georgia
-            </p>
-            <h1 id="hero-title">
-              Noor Daycare<span>Family Child Care</span>
-            </h1>
-            <p className="hero-tagline">
-              Little days. <br />
-              Big discoveries.
-            </p>
-            <p className="hero-description">
-              A small home daycare for growing, playing,
-              <br className="desktop-break" /> and finding a little more
-              independence.
-            </p>
-            <a
-              className="button button-red hero-visit"
-              href={BOOKING_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              ref={heroVisitLink}
-            >
-              <CalendarDays size={20} aria-hidden="true" /> Schedule a visit
-              <ArrowRight size={20} aria-hidden="true" />
-            </a>
-            <p className="visit-reassurance">
-              Meet Naila, see the space, and ask your questions.
-            </p>
-            <a className="hero-scroll" href="#about">
-              <ArrowDown size={18} aria-hidden="true" /> Explore our little home
-            </a>
-          </div>
-          <span className="hero-preview">Preview image</span>
-        </section>
-        <div className="facts-band">
-          <div className="container facts-inner">
-            <span>
-              <ShieldCheck aria-hidden="true" /> Licensed family child care
-            </span>
-            <span>
-              <Clock3 aria-hidden="true" /> 7:30 AM - 6:00 PM
-            </span>
-            <span>
-              <Heart aria-hidden="true" /> 8 weeks through 4 years
-            </span>
-          </div>
-        </div>
-        <section className="section about-section" id="about">
-          <div className="container about-grid">
-            <div className="about-photo-wrap">
-              <PhotoStack />
-              <p className="photo-note">Room for a little wonder.</p>
-            </div>
-            <div className="about-copy">
-              <p className="eyebrow">Our little home</p>
-              <h2>
-                Small setting.
+          <div className="container hero-grid">
+            <div className="hero-copy">
+              <p className="eyebrow">
+                <MapPin size={17} aria-hidden="true" />
+                Lawrenceville, Georgia
+              </p>
+              <h1 id="hero-title">
+                Little group.
                 <br />
-                <span className="text-red">A world of possibility.</span>
-              </h2>
-              <p>
-                There&apos;s something special about growing up in a home
-                setting. Familiar spaces, a smaller group, and everyday moments
-                to learn together.
+                <span className="text-red">Whole lot of care.</span>
+              </h1>
+              <p className="hero-description">
+                A small, licensed home daycare where your child is known,
+                comforted, and encouraged, one little moment at a time.
               </p>
-              <p>
-                Noor Daycare is a licensed home daycare run by Naila Ahmad in
-                Lawrenceville, welcoming children from 8 weeks through 4 years
-                old.
+              <p className="hero-detail">
+                Warm care. Personal attention. A familiar rhythm of play, meals,
+                and rest.
               </p>
-              <div className="about-detail">
-                <House aria-hidden="true" />
-                <span>
-                  <strong>Home is where we begin.</strong>
-                  <br />A Family Child Care Learning Home in your community.
-                </span>
-              </div>
-            </div>
-          </div>
-        </section>
-        <section className="section programs-section" id="programs">
-          <div className="container">
-            <div className="section-heading">
-              <p className="eyebrow">Little people, different stages</p>
-              <h2>Growing at their own pace.</h2>
-              <p>
-                From first discoveries to preschool adventures, there&apos;s a
-                lot of growing to do.
-              </p>
-            </div>
-            <div className="age-tabs" role="tablist" aria-label="Age groups">
-              {programs.map((item, index) => {
-                const Icon = item.icon;
-                return (
-                  <button
-                    key={item.name}
-                    type="button"
-                    role="tab"
-                    id={`age-${index}`}
-                    aria-controls="age-panel"
-                    aria-selected={programIndex === index}
-                    tabIndex={programIndex === index ? 0 : -1}
-                    className={`age-tab ${item.color}`}
-                    onClick={() => setProgramIndex(index)}
-                    onKeyDown={(e) =>
-                      tabKeys(e, index, programs.length, setProgramIndex, "age")
-                    }
-                  >
-                    <Icon size={30} aria-hidden="true" />
-                    <span>
-                      <strong>{item.name}</strong>
-                      <small>{item.range}</small>
-                    </span>
-                    <ArrowDown
-                      className="tab-arrow"
-                      size={18}
-                      aria-hidden="true"
-                    />
-                  </button>
-                );
-              })}
-            </div>
-            <div
-              className={`age-panel ${program.color}`}
-              role="tabpanel"
-              id="age-panel"
-              aria-labelledby={`age-${programIndex}`}
-              tabIndex={0}
-              key={programIndex}
-            >
-              <div>
-                <p className="eyebrow">
-                  {program.name} / {program.range}
-                </p>
-                <h3>{program.title}</h3>
-                <p>{program.description}</p>
-              </div>
-              <div className="age-details">
-                <ul>
-                  {program.details.map((detail) => (
-                    <li key={detail}>
-                      <Check size={18} aria-hidden="true" />
-                      {detail}
-                    </li>
-                  ))}
-                </ul>
-                <p>{program.note}</p>
-              </div>
-            </div>
-          </div>
-        </section>
-        <section className="section day-section" id="day">
-          <div className="container">
-            <div className="day-heading">
-              <div>
-                <p className="eyebrow">A day here</p>
-                <h2>
-                  A little play.
-                  <br />
-                  <span className="text-blue">
-                    A little rest. A lot of growing.
-                  </span>
-                </h2>
-              </div>
-              <p>
-                Our daily rhythm, from a warm welcome to a happy goodbye.
-                Activities follow this order, with timing adapted to
-                children&apos;s needs.
-              </p>
-            </div>
-            <div className="day-tabs" role="tablist" aria-label="Daily routine">
-              {moments.map((item, index) => {
-                const Icon = item.icon;
-                return (
-                  <button
-                    role="tab"
-                    type="button"
-                    key={item.time}
-                    id={`day-${index}`}
-                    aria-controls="day-panel"
-                    aria-selected={momentIndex === index}
-                    tabIndex={momentIndex === index ? 0 : -1}
-                    onClick={() => selectMoment(index)}
-                    onKeyDown={(e) =>
-                      tabKeys(e, index, moments.length, selectMoment, "day")
-                    }
-                  >
-                    <Icon size={24} aria-hidden="true" />
-                    <span>
-                      <small>{item.time}</small>
-                      <strong>{item.label}</strong>
-                    </span>
-                  </button>
-                );
-              })}
-            </div>
-            <div
-              className="day-panel"
-              role="tabpanel"
-              id="day-panel"
-              aria-labelledby={`day-${momentIndex}`}
-              tabIndex={0}
-              key={momentIndex}
-            >
-              <PreviewPhoto src={moment.image} alt={moment.alt} />
-              <div className="day-story">
-                <p className="eyebrow">{moment.time}</p>
-                <h3>{moment.title}</h3>
-                <ol className="day-activities" role="list">
-                  {moment.activities.map((activity) => {
-                    const ActivityIcon = activity.icon;
-                    return (
-                      <li key={activity.label}>
-                        <ActivityIcon size={19} strokeWidth={1.75} aria-hidden="true" />
-                        <span>{activity.label}</span>
-                      </li>
-                    );
-                  })}
-                </ol>
-                <div className="day-step-controls">
-                  <span>
-                    {momentIndex + 1} of {moments.length} moments
-                  </span>
-                  <button
-                    className="icon-button"
-                    aria-label="Next moment"
-                    title="Next moment"
-                    onClick={() =>
-                      selectMoment((momentIndex + 1) % moments.length)
-                    }
-                  >
-                    <ArrowRight aria-hidden="true" />
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-        <section className="contact-section" id="contact" ref={visitSection}>
-          <div className="container contact-layout">
-            <div className="contact-inner">
-              <p className="eyebrow">Your family&apos;s next chapter</p>
-              <h2>It starts with a hello.</h2>
-              <p>
-                A visit is the best way to see whether our little home feels
-                like the right fit for your family.
-              </p>
-              <ul className="visit-expectations">
-                <li>
-                  <Check size={18} aria-hidden="true" /> Meet Naila and get to
-                  know the daycare
-                </li>
-                <li>
-                  <Check size={18} aria-hidden="true" /> Talk about your
-                  child&apos;s routines and needs
-                </li>
-                <li>
-                  <Check size={18} aria-hidden="true" /> Ask about openings,
-                  care hours, and tuition
-                </li>
-              </ul>
-              <span className="contact-location">
-                <MapPin size={16} aria-hidden="true" /> Lawrenceville, Georgia
-              </span>
-              <PhoneContact />
-            </div>
-            <div
-              className="visit-booking"
-              aria-labelledby="visit-booking-title"
-            >
-              <CalendarDays size={32} aria-hidden="true" />
-              <h3 id="visit-booking-title">Schedule a visit</h3>
-              <p>We&apos;d love to meet your family.</p>
-              <CalendlyBooking />
               <a
-                className="text-link booking-direct"
+                className="button button-red hero-visit"
                 href={BOOKING_URL}
                 target="_blank"
                 rel="noopener noreferrer"
+                ref={heroVisitLink}
               >
-                Open booking in a new tab{" "}
-                <ArrowRight size={18} aria-hidden="true" />
+                <CalendarDays size={20} aria-hidden="true" />
+                <span>Schedule a visit</span>
+                <ArrowRight size={19} aria-hidden="true" />
               </a>
+              <p className="visit-reassurance">
+                See the space. Ask your questions. Find your fit.
+              </p>
+              <a className="hero-scroll" href="#about">
+                <ArrowDown size={17} aria-hidden="true" />
+                Get to know Noor
+              </a>
+            </div>
+            <div className="hero-visual">
+              <figure className="preview-photo hero-photo">
+                <img
+                  src="/images/playroom-preview.jpg"
+                  alt="Preview of a bright playroom with toys and books; not Noor's actual daycare"
+                  width="1800"
+                  height="1100"
+                  fetchPriority="high"
+                />
+                <figcaption>Preview image · not the actual daycare</figcaption>
+              </figure>
+              <div className="small-group-note">
+                <span className="group-icon">
+                  <Users size={28} aria-hidden="true" />
+                </span>
+                <p>
+                  <strong>Just 6 children.</strong>
+                  <span>A smaller setting for more personal attention.</span>
+                </p>
+                <Heart size={28} aria-hidden="true" />
+              </div>
+            </div>
+          </div>
+          <div className="facts-band">
+            <dl className="container facts-inner">
+              <div>
+                <Baby aria-hidden="true" />
+                <dt>Ages</dt>
+                <dd>8 weeks–4 years</dd>
+              </div>
+              <div>
+                <Clock3 aria-hidden="true" />
+                <dt>Weekday hours</dt>
+                <dd>7:30 AM–6:00 PM</dd>
+              </div>
+              <div>
+                <ShieldCheck aria-hidden="true" />
+                <dt>Licensed through</dt>
+                <dd>Bright from the Start</dd>
+              </div>
+              <div>
+                <House aria-hidden="true" />
+                <dt>Home daycare</dt>
+                <dd>Capacity of 6 children</dd>
+              </div>
+            </dl>
+          </div>
+        </section>
+
+        <section
+          className="section why-section"
+          id="about"
+          aria-labelledby="why-title"
+        >
+          <div className="container">
+            <div className="section-heading split-heading">
+              <div>
+                <p className="eyebrow">Why families choose Noor</p>
+                <h2 id="why-title">
+                  Small enough to know
+                  <br />
+                  <span className="text-green">what makes them, them.</span>
+                </h2>
+              </div>
+              <p>
+                You want to leave knowing your child is in caring hands. At
+                Noor, a smaller home setting brings together the warmth they
+                need and the trust you need.
+              </p>
+            </div>
+            <div className="reasons-grid">
+              <article>
+                <span className="reason-icon pink">
+                  <Heart aria-hidden="true" />
+                </span>
+                <h3>Care that feels familiar</h3>
+                <p>
+                  Comfort items, favorite stories, little routines. We make
+                  space to learn what helps your child settle in and feel at
+                  home.
+                </p>
+              </article>
+              <article>
+                <span className="reason-icon yellow">
+                  <Users aria-hidden="true" />
+                </span>
+                <h3>A little group, by design</h3>
+                <p>
+                  With a current capacity of 6 children, personal attention is
+                  part of everyday life, from a gentle goodbye to a new skill
+                  worth celebrating.
+                </p>
+              </article>
+              <article>
+                <span className="reason-icon green">
+                  <House aria-hidden="true" />
+                </span>
+                <h3>Warmth within reach</h3>
+                <p>
+                  Families choose Noor for affordable care in a licensed home
+                  setting, with personal attention and familiar daily routines.
+                </p>
+              </article>
+            </div>
+            <div className="trust-panel">
+              <div className="trust-intro">
+                <ShieldCheck size={32} aria-hidden="true" />
+                <div>
+                  <h3>A warm home. A foundation of trust.</h3>
+                  <p>
+                    Licensed through Bright from the Start, with training that
+                    supports attentive daily care.
+                  </p>
+                </div>
+              </div>
+              <ul
+                className="credentials"
+                aria-label="Licensing and certifications"
+              >
+                <li>Bright from the Start</li>
+                <li>CDA certified</li>
+                <li>CPR certified</li>
+                <li>First Aid certified</li>
+              </ul>
+              <p className="trust-note">
+                You&apos;re welcome to review our license and certifications
+                during your visit.
+              </p>
             </div>
           </div>
         </section>
-        <section className="section questions-section" id="questions">
-          <div className="container questions-grid">
-            <div>
-              <p className="eyebrow">For the grown-ups</p>
-              <h2>
-                Little questions.
+
+        <section
+          className="section programs-section"
+          id="programs"
+          aria-labelledby="programs-title"
+        >
+          <div className="container">
+            <div className="section-heading">
+              <p className="eyebrow">Care for each stage</p>
+              <h2 id="programs-title">
+                Their own pace.
                 <br />
-                Big decisions.
+                <span className="text-blue">Their next little step.</span>
               </h2>
               <p>
-                Choosing care is personal.
-                <br />
-                Here are a few things to start with.
+                One welcoming home, with care that makes room for different
+                ages, needs, and new discoveries.
               </p>
-              <Heart
-                className="questions-heart"
-                size={64}
-                strokeWidth={1.6}
-                aria-hidden="true"
-              />
             </div>
+            <div className="program-grid">
+              {programs.map((program) => {
+                const Icon = program.icon;
+                return (
+                  <article
+                    className={`program-card ${program.color}`}
+                    key={program.name}
+                  >
+                    <div className="program-label">
+                      <Icon size={34} strokeWidth={1.7} aria-hidden="true" />
+                      <div>
+                        <h3>{program.name}</h3>
+                        <p>{program.range}</p>
+                      </div>
+                    </div>
+                    <div className="program-body">
+                      <h4>{program.title}</h4>
+                      <p>{program.description}</p>
+                      <ul>
+                        {program.details.map((detail) => (
+                          <li key={detail}>
+                            <Check size={18} aria-hidden="true" />
+                            <span>{detail}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </article>
+                );
+              })}
+            </div>
+            <p className="stage-note">
+              <Heart size={19} aria-hidden="true" />
+              <span>
+                Tell us where your child is today. We&apos;ll talk about
+                routines and support that fit.
+              </span>
+            </p>
+          </div>
+        </section>
+
+        <section
+          className="section day-section"
+          id="day"
+          aria-labelledby="day-title"
+        >
+          <div className="container">
+            <div className="section-heading split-heading">
+              <div>
+                <p className="eyebrow">A day at Noor</p>
+                <h2 id="day-title">
+                  A rhythm they can
+                  <br />
+                  <span className="text-blue">settle into.</span>
+                </h2>
+              </div>
+              <p>
+                Time to play, time to eat, time to rest. Our day follows a
+                familiar order, with timing adapted to children&apos;s ages and
+                needs.
+              </p>
+            </div>
+            <div className="day-layout">
+              <ol className="day-timeline" aria-label="Daily routine">
+                {moments.map((moment) => {
+                  const Icon = moment.icon;
+                  return (
+                    <li key={moment.time}>
+                      <span className={`moment-icon ${moment.color}`}>
+                        <Icon size={23} aria-hidden="true" />
+                      </span>
+                      <div>
+                        <p className="moment-time">{moment.time}</p>
+                        <h3>{moment.title}</h3>
+                        <p>{moment.description}</p>
+                      </div>
+                    </li>
+                  );
+                })}
+              </ol>
+              <div className="day-aside">
+                <figure className="preview-photo outdoor-photo">
+                  <img
+                    src="/images/outdoor-preview.jpg"
+                    alt="Preview of an outdoor childcare play area; not Noor's actual outdoor space"
+                    width="1000"
+                    height="750"
+                    loading="lazy"
+                  />
+                  <figcaption>
+                    Preview image · not the actual daycare
+                  </figcaption>
+                </figure>
+                <div className="play-note">
+                  <Sun size={30} aria-hidden="true" />
+                  <h3>Room for the wiggles.</h3>
+                  <p>
+                    A play area, slides, swings, and outdoor time give little
+                    bodies a chance to move. Art, music, and stories make room
+                    for imagination, too.
+                  </p>
+                </div>
+                <p className="routine-note">
+                  <Heart size={20} aria-hidden="true" />
+                  <span>
+                    Infant feeding and sleep follow individual needs. Bathroom
+                    breaks include patient potty training support when your
+                    child is ready.
+                  </span>
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section
+          className="section contact-section"
+          id="contact"
+          aria-labelledby="visit-title"
+        >
+          <div className="container contact-layout">
+            <div className="visit-copy">
+              <p className="eyebrow">Come say hello</p>
+              <h2 id="visit-title">Schedule a visit</h2>
+              <p className="visit-intro">
+                We’d love to meet your family and show you around.
+              </p>
+              <div className="visit-practical">
+                <p>
+                  <MapPin size={18} aria-hidden="true" />
+                  <span>Lawrenceville, Georgia</span>
+                </p>
+                <p>
+                  <Clock3 size={18} aria-hidden="true" />
+                  <span>Weekdays · 7:30 AM–6:00 PM</span>
+                </p>
+                <PhoneContact />
+              </div>
+            </div>
+            <div
+              className="visit-booking"
+              ref={bookingPanel}
+              aria-labelledby="visit-title"
+            >
+              <div className="booking-heading">
+                <a
+                  className="text-link booking-direct"
+                  href={BOOKING_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <span>Open booking in a new tab</span>
+                  <ArrowRight size={18} aria-hidden="true" />
+                </a>
+              </div>
+              <CalendlyBooking />
+            </div>
+          </div>
+        </section>
+        <section
+          className="section questions-section"
+          id="questions"
+          aria-labelledby="questions-title"
+        >
+          <div className="container questions-layout">
+            <h2 id="questions-title">Parent questions</h2>
             <div className="faq-list">
               {faqs.map((faq) => (
                 <details key={faq.question}>
                   <summary>
-                    {faq.question}
-                    <ChevronDown size={21} aria-hidden="true" />
+                    <span>{faq.question}</span>
+                    <ChevronDown size={20} aria-hidden="true" />
                   </summary>
                   <p>{faq.answer}</p>
                 </details>
@@ -707,29 +667,18 @@ export default function Home() {
           </div>
         </section>
       </main>
+
       <footer className="site-footer">
         <div className="container footer-top">
           <Brand />
-          <nav aria-label="Footer navigation">
-            <a href={BOOKING_URL} target="_blank" rel="noopener noreferrer">
-              <span className="footer-full-label">Schedule a visit</span>
-              <span className="footer-short-label">Visit</span>
-            </a>
-            <a href="#programs">
-              <span className="footer-full-label">Ages & care</span>
-              <span className="footer-short-label">Ages</span>
-            </a>
-            <a href="#day">
-              <span className="footer-full-label">A day here</span>
-              <span className="footer-short-label">Our day</span>
-            </a>
-            <a href="#questions">
-              <span className="footer-full-label">Parent questions</span>
-              <span className="footer-short-label">Questions</span>
-            </a>
-          </nav>
-          <a className="back-top" href="/" onClick={goToPageTop}>
-            Back to top <ArrowUp size={18} aria-hidden="true" />
+          <p>
+            Small home. Warm care.
+            <br />
+            Lawrenceville, Georgia.
+          </p>
+          <a className="back-top" href="#top" onClick={goToPageTop}>
+            Back to top
+            <ArrowUp size={18} aria-hidden="true" />
           </a>
         </div>
         <div className="container footer-bottom">
@@ -738,14 +687,15 @@ export default function Home() {
         </div>
       </footer>
       <div className="mobile-visit-dock" hidden={!showVisitDock || menuOpen}>
-        <span>Come say hello.</span>
         <a
           className="button button-red"
           href={BOOKING_URL}
           target="_blank"
           rel="noopener noreferrer"
         >
-          <CalendarDays size={18} aria-hidden="true" /> Schedule a visit
+          <CalendarDays size={19} aria-hidden="true" />
+          <span>Schedule a visit</span>
+          <ArrowRight size={18} aria-hidden="true" />
         </a>
       </div>
     </>
