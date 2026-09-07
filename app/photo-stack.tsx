@@ -7,23 +7,23 @@ const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
 
 const previews = [
   {
-    src: `${basePath}/images/art-preview.jpg`,
+    src: `${basePath}/images/art-preview.jpg?v=2`,
     alt: "Children exploring paint together",
   },
   {
-    src: `${basePath}/images/playroom-preview.jpg`,
+    src: `${basePath}/images/playroom-preview.jpg?v=2`,
     alt: "A bright playroom with toys and books",
   },
   {
-    src: `${basePath}/images/blocks-preview.jpg`,
+    src: `${basePath}/images/blocks-preview.jpg?v=2`,
     alt: "Children building with wooden blocks",
   },
   {
-    src: `${basePath}/images/reading-preview.jpg`,
+    src: `${basePath}/images/reading-preview.jpg?v=2`,
     alt: "A child sharing a storybook with an adult",
   },
   {
-    src: `${basePath}/images/outdoor-preview.jpg`,
+    src: `${basePath}/images/outdoor-preview.jpg?v=2`,
     alt: "An outdoor childcare play space",
   },
 ];

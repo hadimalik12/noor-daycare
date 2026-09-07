@@ -396,7 +396,7 @@ export default function Home() {
             <div className="hero-visual">
               <figure className="preview-photo hero-photo">
                 <img
-                  src={`${basePath}/images/playroom-preview.jpg`}
+                  src={`${basePath}/images/playroom-preview.jpg?v=2`}
                   alt="Preview of a bright playroom with toys and books; not Noor's actual daycare"
                   width="1800"
                   height="1100"
@@ -626,7 +626,7 @@ export default function Home() {
               <div className="day-aside">
                 <figure className="preview-photo outdoor-photo">
                   <img
-                    src={`${basePath}/images/outdoor-preview.jpg`}
+                    src={`${basePath}/images/outdoor-preview.jpg?v=2`}
                     alt="Preview of an outdoor childcare play area; not Noor's actual outdoor space"
                     width="1000"
                     height="750"
