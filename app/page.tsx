@@ -193,22 +193,28 @@ export default function Home() {
             continue;
           const animation = entry.target.animate(
             [
-              { opacity: 0, transform: "translateY(18px)" },
-              { opacity: 1, transform: "translateY(0)" },
+              { transform: "translateY(12px)" },
+              { transform: "translateY(0)" },
             ],
-            { duration: 550, easing: "cubic-bezier(0.22, 1, 0.36, 1)" },
+            { duration: 420, easing: "cubic-bezier(0.22, 1, 0.36, 1)" },
           );
           animations.add(animation);
           animation.onfinish = () => animations.delete(animation);
         }
       },
-      { threshold: 0.08, rootMargin: "0px 0px -24px 0px" },
+      { threshold: 0, rootMargin: "0px 0px 80px 0px" },
     );
     document
       .querySelectorAll(
         ".section-heading, .reasons-grid article, .trust-panel, .program-card, .day-timeline li, .day-aside, .visit-copy, .visit-booking, .questions-layout",
       )
-      .forEach((element) => observer.observe(element));
+      .forEach((element) => {
+        // Never replay an entrance for content already visible on load,
+        // including a restored scroll position or a direct section link.
+        if (element.getBoundingClientRect().top > window.innerHeight + 80) {
+          observer.observe(element);
+        }
+      });
     const stopMotion = () => {
       if (reducedMotion.matches) {
         animations.forEach((animation) => animation.cancel());
