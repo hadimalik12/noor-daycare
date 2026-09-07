@@ -1185,17 +1185,10 @@ h1 span {
     min-height: 540px;
     height: auto;
   }
-  .hero-photo {
-    object-position: 64% bottom;
-  }
-  .hero-wash {
-    background: linear-gradient(
-      180deg,
-      #fffefa 0%,
-      #fffefaf5 40%,
-      #fffefad9 58%,
-      #fffefa00 85%
-    );
+  .hero-photo,
+  .hero-wash,
+  .hero-preview {
+    display: none;
   }
   .hero-content {
     padding-top: 29px;
@@ -1238,10 +1231,6 @@ h1 span {
   }
   .hero-scroll {
     margin-top: 21px;
-  }
-  .hero-preview {
-    right: 14px;
-    bottom: 12px;
   }
   .facts-inner {
     display: grid;
