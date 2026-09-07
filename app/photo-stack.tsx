@@ -3,22 +3,27 @@
 import { useState, type CSSProperties } from "react";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 
+const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
+
 const previews = [
-  { src: "/images/art-preview.jpg", alt: "Children exploring paint together" },
   {
-    src: "/images/playroom-preview.jpg",
+    src: `${basePath}/images/art-preview.jpg`,
+    alt: "Children exploring paint together",
+  },
+  {
+    src: `${basePath}/images/playroom-preview.jpg`,
     alt: "A bright playroom with toys and books",
   },
   {
-    src: "/images/blocks-preview.jpg",
+    src: `${basePath}/images/blocks-preview.jpg`,
     alt: "Children building with wooden blocks",
   },
   {
-    src: "/images/reading-preview.jpg",
+    src: `${basePath}/images/reading-preview.jpg`,
     alt: "A child sharing a storybook with an adult",
   },
   {
-    src: "/images/outdoor-preview.jpg",
+    src: `${basePath}/images/outdoor-preview.jpg`,
     alt: "An outdoor childcare play space",
   },
 ];

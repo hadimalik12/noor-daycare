@@ -25,6 +25,8 @@ import { CalendlyBooking, BOOKING_URL } from "./calendly-booking";
 import { PhoneContact } from "./phone-contact";
 import { goToPageTop, resetInitialScroll } from "./scroll-navigation";
 
+const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
+
 const navigation = [
   ["#about", "Why Noor"],
   ["#programs", "Ages & care"],
@@ -394,7 +396,7 @@ export default function Home() {
             <div className="hero-visual">
               <figure className="preview-photo hero-photo">
                 <img
-                  src="/images/playroom-preview.jpg"
+                  src={`${basePath}/images/playroom-preview.jpg`}
                   alt="Preview of a bright playroom with toys and books; not Noor's actual daycare"
                   width="1800"
                   height="1100"
@@ -624,7 +626,7 @@ export default function Home() {
               <div className="day-aside">
                 <figure className="preview-photo outdoor-photo">
                   <img
-                    src="/images/outdoor-preview.jpg"
+                    src={`${basePath}/images/outdoor-preview.jpg`}
                     alt="Preview of an outdoor childcare play area; not Noor's actual outdoor space"
                     width="1000"
                     height="750"
