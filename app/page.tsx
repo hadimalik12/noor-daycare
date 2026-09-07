@@ -14,14 +14,12 @@ import {
   Heart,
   House,
   MapPin,
-  Menu,
   Moon,
   Palette,
   ShieldCheck,
   Sprout,
   Sun,
   Users,
-  X,
 } from "lucide-react";
 import { CalendlyBooking, BOOKING_URL } from "./calendly-booking";
 import { PhoneContact } from "./phone-contact";
@@ -307,9 +305,14 @@ export default function Home() {
             aria-label={menuOpen ? "Close navigation" : "Open navigation"}
             aria-expanded={menuOpen}
             aria-controls="mobile-navigation"
+            data-open={menuOpen}
             onClick={() => setMenuOpen(!menuOpen)}
           >
-            {menuOpen ? <X aria-hidden="true" /> : <Menu aria-hidden="true" />}
+            <span className="menu-toggle-lines" aria-hidden="true">
+              <span />
+              <span />
+              <span />
+            </span>
           </button>
         </div>
         <div
