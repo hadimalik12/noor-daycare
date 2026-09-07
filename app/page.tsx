@@ -178,6 +178,51 @@ export default function Home() {
 
   useEffect(resetInitialScroll, []);
 
+  useEffect(() => {
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const animations = new Set<Animation>();
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (!entry.isIntersecting) continue;
+          observer.unobserve(entry.target);
+          if (
+            reducedMotion.matches ||
+            entry.target.contains(document.activeElement)
+          )
+            continue;
+          const animation = entry.target.animate(
+            [
+              { opacity: 0, transform: "translateY(18px)" },
+              { opacity: 1, transform: "translateY(0)" },
+            ],
+            { duration: 550, easing: "cubic-bezier(0.22, 1, 0.36, 1)" },
+          );
+          animations.add(animation);
+          animation.onfinish = () => animations.delete(animation);
+        }
+      },
+      { threshold: 0.08, rootMargin: "0px 0px -24px 0px" },
+    );
+    document
+      .querySelectorAll(
+        ".section-heading, .reasons-grid article, .trust-panel, .program-card, .day-timeline li, .day-aside, .visit-copy, .visit-booking, .questions-layout",
+      )
+      .forEach((element) => observer.observe(element));
+    const stopMotion = () => {
+      if (reducedMotion.matches) {
+        animations.forEach((animation) => animation.cancel());
+        animations.clear();
+      }
+    };
+    reducedMotion.addEventListener("change", stopMotion);
+    return () => {
+      observer.disconnect();
+      animations.forEach((animation) => animation.cancel());
+      reducedMotion.removeEventListener("change", stopMotion);
+    };
+  }, []);
+
   function closeMenu() {
     setMenuOpen(false);
     menuButton.current?.focus();
@@ -686,7 +731,12 @@ export default function Home() {
           <span>Photos are previews, not the actual daycare.</span>
         </div>
       </footer>
-      <div className="mobile-visit-dock" hidden={!showVisitDock || menuOpen}>
+      <div
+        className="mobile-visit-dock"
+        data-visible={showVisitDock && !menuOpen}
+        aria-hidden={!showVisitDock || menuOpen}
+        inert={!showVisitDock || menuOpen}
+      >
         <a
           className="button button-red"
           href={BOOKING_URL}
