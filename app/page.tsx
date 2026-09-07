@@ -24,6 +24,7 @@ import {
 import { CalendlyBooking, BOOKING_URL } from "./calendly-booking";
 import { PhoneContact } from "./phone-contact";
 import { PhotoStack } from "./photo-stack";
+import { goToPageTop, resetInitialScroll } from "./scroll-navigation";
 
 const photos = {
   room: "/images/playroom-preview.jpg",
@@ -177,9 +178,16 @@ function PreviewPhoto({
     </figure>
   );
 }
-function Brand() {
+function Brand({ onHome }: { onHome?: () => void }) {
   return (
-    <a className="brand" href="#top" aria-label="Noor Daycare home">
+    <a
+      className="brand"
+      href="/"
+      aria-label="Noor Daycare home"
+      onClick={(event) => {
+        if (goToPageTop(event)) onHome?.();
+      }}
+    >
       <span className="brand-mark">
         <House size={27} strokeWidth={2.3} aria-hidden="true" />
       </span>
@@ -201,6 +209,8 @@ export default function Home() {
   const visitSection = useRef<HTMLElement>(null);
   const program = programs[programIndex];
   const moment = moments[momentIndex];
+
+  useEffect(resetInitialScroll, []);
 
   function closeMenu() {
     setMenuOpen(false);
@@ -269,6 +279,8 @@ export default function Home() {
       </a>
       <header
         className="site-header"
+        id="top"
+        tabIndex={-1}
         onBlur={(event) => {
           if (!event.currentTarget.contains(event.relatedTarget))
             setMenuOpen(false);
@@ -280,7 +292,7 @@ export default function Home() {
         }}
       >
         <div className="header-inner">
-          <Brand />
+          <Brand onHome={() => setMenuOpen(false)} />
           <nav className="desktop-nav" aria-label="Main navigation">
             <a href="#about">Our little home</a>
             <a href="#programs">Ages & care</a>
@@ -347,7 +359,7 @@ export default function Home() {
         </div>
       </header>
       <main id="main">
-        <section className="hero" id="top" aria-labelledby="hero-title">
+        <section className="hero" aria-labelledby="hero-title">
           <img
             className="hero-photo"
             src={photos.room}
@@ -698,7 +710,7 @@ export default function Home() {
               <span className="footer-short-label">Questions</span>
             </a>
           </nav>
-          <a className="back-top" href="#top">
+          <a className="back-top" href="/" onClick={goToPageTop}>
             Back to top <ArrowUp size={18} aria-hidden="true" />
           </a>
         </div>
