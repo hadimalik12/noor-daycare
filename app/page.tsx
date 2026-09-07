@@ -22,6 +22,7 @@ import {
   X,
 } from "lucide-react";
 import { CalendlyBooking, BOOKING_URL } from "./calendly-booking";
+import { PhoneContact } from "./phone-contact";
 
 const photos = {
   room: "/images/playroom-preview.jpg",
@@ -652,6 +653,7 @@ export default function Home() {
               <span className="contact-location">
                 <MapPin size={16} aria-hidden="true" /> Lawrenceville, Georgia
               </span>
+              <PhoneContact />
             </div>
             <div
               className="visit-booking"

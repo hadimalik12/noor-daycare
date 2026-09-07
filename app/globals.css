@@ -704,6 +704,35 @@ h1 span {
   margin-top: 22px;
   font-size: 14px;
 }
+.phone-contact {
+  margin-top: 20px;
+}
+.phone-contact-control {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 240px;
+  max-width: 100%;
+  min-height: 48px;
+  padding: 10px 14px;
+  border: 1px solid currentColor;
+  border-radius: 6px;
+  background: transparent;
+  color: white;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.5;
+  text-align: center;
+}
+.phone-contact-control:hover {
+  background: white;
+  color: var(--green);
+}
+.phone-contact-control:focus-visible {
+  outline: 3px solid var(--yellow);
+  outline-offset: 4px;
+}
 .visit-reassurance {
   max-width: 365px;
   margin-top: 10px;
