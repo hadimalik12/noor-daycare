@@ -674,17 +674,20 @@ h1 span {
 }
 .day-activities {
   margin: 5px 0 0;
-  padding-left: 22px;
+  padding: 0;
+  list-style: none;
   display: grid;
   gap: 12px;
   font-size: 16px;
 }
 .day-activities li {
-  padding-left: 5px;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
 }
-.day-activities li::marker {
-  font-weight: 700;
-  color: var(--blue);
+.day-activities li > svg {
+  margin-top: 4px;
+  color: currentColor;
 }
 .day-story h3 {
   max-width: 350px;

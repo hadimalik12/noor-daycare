@@ -6,19 +6,29 @@ import {
   ArrowRight,
   ArrowUp,
   Baby,
+  Backpack,
+  Blocks,
+  BookOpen,
+  Apple,
   CalendarDays,
   Check,
   ChevronDown,
   Clock3,
   Heart,
+  Hand,
+  Footprints,
   House,
   MapPin,
   Menu,
   Moon,
+  Music,
   Palette,
   ShieldCheck,
   Sprout,
   Sun,
+  Sparkles,
+  Toilet,
+  Utensils,
   X,
 } from "lucide-react";
 import { CalendlyBooking, BOOKING_URL } from "./calendly-booking";
@@ -85,7 +95,10 @@ const moments = [
     label: "Welcome in",
     icon: Sun,
     title: "A happy start to the day.",
-    activities: ["Welcome & arrival", "Handwashing & breakfast"],
+    activities: [
+      { label: "Welcome & arrival", icon: Hand },
+      { label: "Handwashing & breakfast", icon: Utensils },
+    ],
     image: photos.room,
     alt: "Preview of a bright home playroom with toys and books",
   },
@@ -95,10 +108,10 @@ const moments = [
     icon: Palette,
     title: "Songs, stories, and little discoveries.",
     activities: [
-      "Circle time & music",
-      "Bathroom break",
-      "Art, writing & fine motor skills",
-      "Free play & centers",
+      { label: "Circle time & music", icon: Music },
+      { label: "Bathroom break", icon: Toilet },
+      { label: "Art, writing & fine motor skills", icon: Palette },
+      { label: "Free play & centers", icon: Blocks },
     ],
     image: photos.art,
     alt: "Preview of children painting together at a table",
@@ -108,7 +121,10 @@ const moments = [
     label: "Rest & recharge",
     icon: Moon,
     title: "A softer part of the day.",
-    activities: ["Handwashing & lunch", "Nap & quiet time"],
+    activities: [
+      { label: "Handwashing & lunch", icon: Utensils },
+      { label: "Nap & quiet time", icon: Moon },
+    ],
     image: photos.room,
     alt: "Preview of a home childcare room",
   },
@@ -118,9 +134,9 @@ const moments = [
     icon: Sprout,
     title: "Refuel, stretch, and play.",
     activities: [
-      "Bathroom break",
-      "Handwashing & snack",
-      "Recess & gross motor play",
+      { label: "Bathroom break", icon: Toilet },
+      { label: "Handwashing & snack", icon: Apple },
+      { label: "Recess & gross motor play", icon: Footprints },
     ],
     image: photos.outdoor,
     alt: "Preview of an outdoor childcare play space",
@@ -131,9 +147,9 @@ const moments = [
     icon: Heart,
     title: "One more story before home.",
     activities: [
-      "Reading & story time",
-      "Free play & clean-up",
-      "Pack-up & dismissal",
+      { label: "Reading & story time", icon: BookOpen },
+      { label: "Free play & clean-up", icon: Sparkles },
+      { label: "Pack-up & dismissal", icon: Backpack },
     ],
     image: photos.art,
     alt: "Preview of children sharing a creative activity",
@@ -582,10 +598,16 @@ export default function Home() {
               <div className="day-story">
                 <p className="eyebrow">{moment.time}</p>
                 <h3>{moment.title}</h3>
-                <ol className="day-activities">
-                  {moment.activities.map((activity) => (
-                    <li key={activity}>{activity}</li>
-                  ))}
+                <ol className="day-activities" role="list">
+                  {moment.activities.map((activity) => {
+                    const ActivityIcon = activity.icon;
+                    return (
+                      <li key={activity.label}>
+                        <ActivityIcon size={19} strokeWidth={1.75} aria-hidden="true" />
+                        <span>{activity.label}</span>
+                      </li>
+                    );
+                  })}
                 </ol>
                 <div className="day-step-controls">
                   <span>
