@@ -1,7 +1,5 @@
 @import "tailwindcss";
 
-/* Revision marker: keep GitHub Pages assets cache-safe after hosting changes. */
-
 :root {
   --paper: #fffefa;
   --ink: #26332f;
@@ -31,6 +29,7 @@ html {
   scroll-padding-bottom: 100px;
 }
 body {
+  isolation: isolate;
   margin: 0;
   background: var(--paper);
   color: var(--ink);
