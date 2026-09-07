@@ -23,6 +23,7 @@ import {
 } from "lucide-react";
 import { CalendlyBooking, BOOKING_URL } from "./calendly-booking";
 import { PhoneContact } from "./phone-contact";
+import { PhotoStack } from "./photo-stack";
 
 const photos = {
   room: "/images/playroom-preview.jpg",
@@ -152,11 +153,6 @@ const faqs = [
     question: "Is this a licensed home daycare?",
     answer:
       "Yes. Noor Daycare is run by Naila Ahmad, who is listed as a licensed Family Child Care Learning Home provider under Ahmad, Naila in Lawrenceville, Georgia. A visit is a good time to review the current license and discuss supervision and the spaces children use.",
-  },
-  {
-    question: "What about tuition, meals, and family support?",
-    answer:
-      "Public directories mention subsidies or vouchers, meal support through CACFP, and a multi-child discount. Ask Naila which options currently apply, what meals are included, and what your family's tuition would be.",
   },
   {
     question: "What should I ask during a visit?",
@@ -412,10 +408,7 @@ export default function Home() {
         <section className="section about-section" id="about">
           <div className="container about-grid">
             <div className="about-photo-wrap">
-              <PreviewPhoto
-                src={photos.art}
-                alt="Preview of young children exploring paint at a table"
-              />
+              <PhotoStack />
               <p className="photo-note">Room for a little wonder.</p>
             </div>
             <div className="about-copy">
@@ -689,11 +682,21 @@ export default function Home() {
           <Brand />
           <nav aria-label="Footer navigation">
             <a href={BOOKING_URL} target="_blank" rel="noopener noreferrer">
-              Schedule a visit
+              <span className="footer-full-label">Schedule a visit</span>
+              <span className="footer-short-label">Visit</span>
             </a>
-            <a href="#programs">Ages & care</a>
-            <a href="#day">A day here</a>
-            <a href="#questions">Parent questions</a>
+            <a href="#programs">
+              <span className="footer-full-label">Ages & care</span>
+              <span className="footer-short-label">Ages</span>
+            </a>
+            <a href="#day">
+              <span className="footer-full-label">A day here</span>
+              <span className="footer-short-label">Our day</span>
+            </a>
+            <a href="#questions">
+              <span className="footer-full-label">Parent questions</span>
+              <span className="footer-short-label">Questions</span>
+            </a>
           </nav>
           <a className="back-top" href="#top">
             Back to top <ArrowUp size={18} aria-hidden="true" />

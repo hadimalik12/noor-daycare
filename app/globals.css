@@ -379,14 +379,70 @@ h1 span {
   font-size: 12px;
 }
 .about-photo-wrap {
-  padding: 12px 0 0 12px;
+  min-width: 0;
 }
-.about-photo-wrap .preview-photo {
-  transform: rotate(-2deg);
-  box-shadow: -12px 12px 0 var(--pink);
+.photo-stack-stage {
+  padding: 20px 16px 28px;
+  overflow: clip;
 }
-.about-photo-wrap img {
-  aspect-ratio: 1 / 1;
+.photo-stack-deck {
+  display: block;
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  perspective: 1000px;
+  touch-action: pan-y pinch-zoom;
+  user-select: none;
+  -webkit-user-select: none;
+}
+.photo-stack-card {
+  position: absolute;
+  inset: 0;
+  display: block;
+  overflow: hidden;
+  border: 6px solid white;
+  border-radius: 8px;
+  background: white;
+  box-shadow: 0 4px 12px #26332f22;
+  transform: translateY(calc(var(--depth) * 8px)) rotate(var(--tilt))
+    scale(calc(1 - var(--depth) * 0.035));
+  transform-origin: 50% 70%;
+  transition: transform 280ms cubic-bezier(0.2, 0.8, 0.2, 1);
+  pointer-events: none;
+}
+.photo-stack-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.photo-stack-label {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  background: var(--paper);
+  color: var(--ink);
+  padding: 4px 9px;
+  border-radius: 3px;
+  font-size: 12px;
+}
+.photo-stack-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+}
+.photo-stack-controls > span {
+  min-width: 50px;
+  text-align: center;
+  font-size: 14px;
+  font-variant-numeric: tabular-nums;
+}
+.photo-stack-controls .icon-button {
+  color: var(--blue);
+  border-color: var(--line);
 }
 .photo-note {
   color: var(--blue);
@@ -827,6 +883,9 @@ h1 span {
   gap: 28px;
   font-size: 14px;
 }
+.footer-short-label {
+  display: none;
+}
 .back-top {
   display: inline-flex;
   align-items: center;
@@ -1262,12 +1321,10 @@ h1 span {
     gap: 36px;
   }
   .about-photo-wrap {
+    width: 100%;
     max-width: 440px;
-    padding: 8px 7px 0 10px;
+    margin-inline: auto;
     order: 2;
-  }
-  .about-photo-wrap img {
-    aspect-ratio: 4 / 3;
   }
   .about-copy > p:not(.eyebrow) {
     margin-top: 18px;
@@ -1391,10 +1448,22 @@ h1 span {
     gap: 27px;
   }
   .site-footer nav {
+    display: grid;
     width: 100%;
-    flex-wrap: wrap;
-    column-gap: 24px;
-    row-gap: 12px;
+    min-width: 0;
+    grid-template-columns: repeat(4, minmax(max-content, 1fr));
+    gap: 12px;
+    overflow-x: auto;
+  }
+  .site-footer nav a {
+    white-space: nowrap;
+    justify-content: center;
+  }
+  .footer-full-label {
+    display: none;
+  }
+  .footer-short-label {
+    display: inline;
   }
   .footer-bottom {
     flex-direction: column;
