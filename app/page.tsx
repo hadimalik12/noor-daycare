@@ -318,6 +318,8 @@ export default function Home() {
           <a
             className="button header-cta"
             href={BOOKING_URL}
+            target="_blank"
+            rel="noopener noreferrer"
           >
             <CalendarDays size={18} aria-hidden="true" /> Schedule a visit
           </a>
@@ -361,6 +363,8 @@ export default function Home() {
               <a
                 key={href}
                 href={href}
+                target={href === BOOKING_URL ? "_blank" : undefined}
+                rel={href === BOOKING_URL ? "noopener noreferrer" : undefined}
                 onClick={closeMenu}
               >
                 {label}
@@ -400,6 +404,8 @@ export default function Home() {
             <a
               className="button button-red hero-visit"
               href={BOOKING_URL}
+              target="_blank"
+              rel="noopener noreferrer"
               ref={heroVisitLink}
             >
               <CalendarDays size={20} aria-hidden="true" /> Schedule a visit
@@ -705,7 +711,7 @@ export default function Home() {
         <div className="container footer-top">
           <Brand />
           <nav aria-label="Footer navigation">
-            <a href={BOOKING_URL}>
+            <a href={BOOKING_URL} target="_blank" rel="noopener noreferrer">
               <span className="footer-full-label">Schedule a visit</span>
               <span className="footer-short-label">Visit</span>
             </a>
@@ -736,6 +742,8 @@ export default function Home() {
         <a
           className="button button-red"
           href={BOOKING_URL}
+          target="_blank"
+          rel="noopener noreferrer"
         >
           <CalendarDays size={18} aria-hidden="true" /> Schedule a visit
         </a>
