@@ -38,6 +38,9 @@ jobs:
         env:
           NEXT_PUBLIC_BASE_PATH: /noor-daycare
 
+      - name: Preserve Next.js assets
+        run: touch out/.nojekyll
+
       - name: Upload site
         uses: actions/upload-pages-artifact@v3
         with:
