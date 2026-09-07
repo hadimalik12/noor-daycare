@@ -317,7 +317,7 @@ export default function Home() {
           </nav>
           <a
             className="button header-cta"
-            href="#contact"
+            href={BOOKING_URL}
           >
             <CalendarDays size={18} aria-hidden="true" /> Schedule a visit
           </a>
@@ -352,7 +352,7 @@ export default function Home() {
             aria-label="Mobile navigation"
           >
             {[
-              ["#contact", "Schedule a visit"],
+              [BOOKING_URL, "Schedule a visit"],
               ["#about", "Our little home"],
               ["#programs", "Ages & care"],
               ["#day", "A day here"],
@@ -399,7 +399,7 @@ export default function Home() {
             </p>
             <a
               className="button button-red hero-visit"
-              href="#contact"
+              href={BOOKING_URL}
               ref={heroVisitLink}
             >
               <CalendarDays size={20} aria-hidden="true" /> Schedule a visit
@@ -705,7 +705,7 @@ export default function Home() {
         <div className="container footer-top">
           <Brand />
           <nav aria-label="Footer navigation">
-            <a href="#contact">
+            <a href={BOOKING_URL}>
               <span className="footer-full-label">Schedule a visit</span>
               <span className="footer-short-label">Visit</span>
             </a>
@@ -735,7 +735,7 @@ export default function Home() {
         <span>Come say hello.</span>
         <a
           className="button button-red"
-          href="#contact"
+          href={BOOKING_URL}
         >
           <CalendarDays size={18} aria-hidden="true" /> Schedule a visit
         </a>
