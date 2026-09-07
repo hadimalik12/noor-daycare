@@ -16,8 +16,8 @@ Preview images are examples from other childcare settings, not photographs of Na
 - `public/images/blocks-preview.jpg`: cottonbro studio, Pexels, https://www.pexels.com/photo/kids-playing-wooden-blocks-7117349/ (listed as free to use).
 - `public/images/reading-preview.jpg`: Kindel Media, Pexels, https://www.pexels.com/photo/young-girl-reading-a-book-7105611/ (listed as free to use).
 
-The about section contains a manual five-photo stack with tap, swipe, and keyboard navigation. Every image remains labeled as a preview.
+The about section contains a manual five-photo stack with previous/next buttons and a subtle crossfade. Photos have no swipe or tap handlers. Every image remains labeled as a preview.
 
 Street address and phone number remain intentionally unpublished. Hours (7:30 AM-6:00 PM) and ages (8 weeks through 4 years) were supplied by the owner. The 14 daily activities are transcribed from the owner's schedule photo, IMG_4301.HEIC, in their original order and grouped into five parts of the day. The photo does not specify individual activity times, so no exact intermediate times are assigned. Directory-reported family supports must be confirmed by the provider.
 
-Scheduling uses the owner's Calendly page, https://calendly.com/noor-day-care, through the official inline widget and direct booking links. Calendly handles booking information; the site does not store it. Naila Ahmad remains identified as the provider; Noor Daycare is the site and business display name.
+Scheduling opens the owner's Day Care Tour event directly at https://calendly.com/noor-day-care/30min, through the official inline widget and booking links. Calendly handles booking information; the site does not store it. Naila Ahmad remains identified as the provider; Noor Daycare is the site and business display name.

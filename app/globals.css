@@ -393,8 +393,6 @@ h1 span {
   padding: 0;
   border: 0;
   background: transparent;
-  perspective: 1000px;
-  touch-action: pan-y pinch-zoom;
   user-select: none;
   -webkit-user-select: none;
 }
@@ -410,8 +408,20 @@ h1 span {
   transform: translateY(calc(var(--depth) * 8px)) rotate(var(--tilt))
     scale(calc(1 - var(--depth) * 0.035));
   transform-origin: 50% 70%;
-  transition: transform 280ms cubic-bezier(0.2, 0.8, 0.2, 1);
   pointer-events: none;
+}
+.photo-stack-outgoing {
+  z-index: 6;
+  transform: none;
+  animation: photo-crossfade 400ms ease-in-out forwards;
+}
+@keyframes photo-crossfade {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
 }
 .photo-stack-card img {
   width: 100%;
@@ -1183,8 +1193,14 @@ h1 span {
   }
   .visit-booking {
     padding: 25px 0;
-    margin-inline: -20px;
-    border-radius: 0;
+    width: max(320px, 100%);
+    max-width: 100vw;
+    justify-self: center;
+    margin-inline: 0;
+    border-radius: 8px;
+    background: white;
+    box-shadow: 0 14px 32px #102e2440, 0 2px 6px #102e2426;
+    overflow: hidden;
   }
   .visit-booking > h3,
   .visit-booking > p,
@@ -1412,18 +1428,27 @@ h1 span {
   }
   .day-panel {
     grid-template-columns: 1fr;
+    background: transparent;
   }
   .day-panel .preview-photo {
-    min-height: 0;
-    aspect-ratio: 4 / 3;
+    display: none;
   }
   .day-story {
-    order: -1;
-    min-height: 360px;
-    padding: 24px;
+    min-height: 0;
+    padding: 0 0 0 16px;
+    border-left: 4px solid var(--yellow);
   }
-  .day-story h3 {
-    font-size: 28px;
+  .day-story h3,
+  .day-step-controls {
+    display: none;
+  }
+  .day-story .eyebrow {
+    color: var(--blue);
+    margin-bottom: 10px;
+  }
+  .day-activities {
+    margin: 0;
+    gap: 8px;
   }
   .questions-grid {
     gap: 28px;
@@ -1505,6 +1530,9 @@ h1 span {
   }
 }
 @media (prefers-reduced-motion: reduce) {
+  .photo-stack-outgoing {
+    display: none;
+  }
   html {
     scroll-behavior: auto;
   }

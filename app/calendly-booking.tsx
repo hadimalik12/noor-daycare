@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 
-export const BOOKING_URL = "https://calendly.com/noor-day-care";
+export const BOOKING_URL = "https://calendly.com/noor-day-care/30min";
 const SCRIPT_URL = "https://assets.calendly.com/assets/external/widget.js";
 
 type CalendlyWindow = Window & {
