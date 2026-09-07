@@ -1,5 +1,7 @@
 @import "tailwindcss";
 
+/* Revision marker: keep GitHub Pages assets cache-safe after hosting changes. */
+
 :root {
   --paper: #fffefa;
   --ink: #26332f;
