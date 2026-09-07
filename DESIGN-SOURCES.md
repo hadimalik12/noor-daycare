@@ -1,6 +1,6 @@
 # Design and preview image references
 
-The September 2026 redesign uses Fredoka for display text and DM Sans for body copy, with red, blue, yellow, pink, and green accents. Age tabs, a sample daily routine, native question disclosures, and mobile navigation support parent browsing.
+The September 2026 Noor Daycare redesign uses Fredoka for display text and DM Sans for body copy, with red, blue, yellow, pink, and green accents. Age tabs, the provider's daily routine, native question disclosures, and mobile navigation support parent browsing.
 
 Design research:
 - https://www.sitebuilderreport.com/inspiration/childcare-daycare-websites
@@ -14,4 +14,6 @@ Preview images are examples from other childcare settings, not photographs of Na
 - `public/images/outdoor-preview.jpg`: existing preview from https://files.kindicare.com/centre-images/15394092676548260/2023-10-05T02%3A06%3A00.047Z/db72f6cd-62d8-4670-87c8-442b0c7c5f1a.jpeg
 - `public/images/art-preview.jpg`: https://www.jupiterhousepreschool.com/uploads/1/0/4/3/10436789/img-5313_orig.jpeg, discovered on https://www.jupiterhousepreschool.com/
 
-Contact details remain intentionally unpublished. Daily routine is explicitly an example. Directory-reported family supports must be confirmed by the provider. No enrollment submissions or reservations are collected by this page.
+Street address and phone number remain intentionally unpublished. Hours (7:30 AM-6:00 PM) and ages (8 weeks through 4 years) were supplied by the owner. The 14 daily activities are transcribed from the owner's schedule photo, IMG_4301.HEIC, in their original order and grouped into five parts of the day. The photo does not specify individual activity times, so no exact intermediate times are assigned. Directory-reported family supports must be confirmed by the provider.
+
+Scheduling uses the owner's Calendly page, https://calendly.com/noor-day-care, through the official inline widget and direct booking links. Calendly handles booking information; the site does not store it. Naila Ahmad remains identified as the provider; Noor Daycare is the site and business display name.

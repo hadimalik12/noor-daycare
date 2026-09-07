@@ -6,7 +6,6 @@ import {
   ArrowRight,
   ArrowUp,
   Baby,
-  BookOpen,
   CalendarDays,
   Check,
   ChevronDown,
@@ -22,6 +21,7 @@ import {
   Sun,
   X,
 } from "lucide-react";
+import { CalendlyBooking, BOOKING_URL } from "./calendly-booking";
 
 const photos = {
   room: "/images/playroom-preview.jpg",
@@ -32,7 +32,7 @@ const photos = {
 const programs = [
   {
     name: "Infants",
-    range: "0-12 months",
+    range: "8 weeks-12 months",
     icon: Baby,
     color: "pink",
     title: "A gentle beginning.",
@@ -75,65 +75,63 @@ const programs = [
     ],
     note: "Talk with Naila about your child's interests and the activities currently offered.",
   },
-  {
-    name: "School age",
-    range: "5+ years",
-    icon: BookOpen,
-    color: "blue",
-    title: "A familiar place to land.",
-    description:
-      "A home environment with room for older children to unwind, read, and enjoy time with others.",
-    details: [
-      "Time to rest and recharge",
-      "Reading and creative activities",
-      "A mixed-age home setting",
-    ],
-    note: "Confirm school-age availability, care times, and any school transportation needs directly with Naila.",
-  },
 ];
 const moments = [
   {
-    time: "7:00 AM",
-    label: "Hello, day!",
+    time: "From 7:30 AM",
+    label: "Welcome in",
     icon: Sun,
-    title: "A little time to settle in.",
-    text: "An unhurried arrival, familiar toys, and quiet play can help children ease into the day.",
+    title: "A happy start to the day.",
+    activities: ["Welcome & arrival", "Handwashing & breakfast"],
     image: photos.room,
     alt: "Preview of a bright home playroom with toys and books",
   },
   {
-    time: "9:00 AM",
+    time: "Morning",
     label: "Make & discover",
     icon: Palette,
-    title: "Where will curiosity take us?",
-    text: "Breakfast, stories, and creative play make room for new words, ideas, and discoveries.",
+    title: "Songs, stories, and little discoveries.",
+    activities: [
+      "Circle time & music",
+      "Bathroom break",
+      "Art, writing & fine motor skills",
+      "Free play & centers",
+    ],
     image: photos.art,
     alt: "Preview of children painting together at a table",
   },
   {
-    time: "11:00 AM",
-    label: "Out we go",
-    icon: Sprout,
-    title: "A change of scenery.",
-    text: "Outdoor play when the weather allows, or an indoor activity to get little bodies moving.",
-    image: photos.outdoor,
-    alt: "Preview of an outdoor childcare play space",
-  },
-  {
-    time: "12:30 PM",
+    time: "Midday",
     label: "Rest & recharge",
     icon: Moon,
     title: "A softer part of the day.",
-    text: "Lunch and a quieter rhythm, with rest and nap routines shaped around children's ages and needs.",
+    activities: ["Handwashing & lunch", "Nap & quiet time"],
     image: photos.room,
     alt: "Preview of a home childcare room",
   },
   {
-    time: "3:30 PM",
+    time: "Afternoon",
+    label: "Snack & move",
+    icon: Sprout,
+    title: "Refuel, stretch, and play.",
+    activities: [
+      "Bathroom break",
+      "Handwashing & snack",
+      "Recess & gross motor play",
+    ],
+    image: photos.outdoor,
+    alt: "Preview of an outdoor childcare play space",
+  },
+  {
+    time: "Until 6:00 PM",
     label: "Play & goodbye",
     icon: Heart,
     title: "One more story before home.",
-    text: "A snack, time to play, and familiar routines as families begin to arrive. Care hours end at 6:00 PM.",
+    activities: [
+      "Reading & story time",
+      "Free play & clean-up",
+      "Pack-up & dismissal",
+    ],
     image: photos.art,
     alt: "Preview of children sharing a creative activity",
   },
@@ -142,17 +140,17 @@ const faqs = [
   {
     question: "What ages do you care for?",
     answer:
-      "The program is listed as serving infants, toddlers, preschoolers, and school-age children. Openings depend on the current group, so confirm availability for your child's age before making plans.",
+      "Noor Daycare welcomes children from 8 weeks through 4 years old. Our age groups include infants, toddlers, and preschoolers. Openings depend on the current group, so ask about availability for your child's age when you schedule a visit.",
   },
   {
     question: "What are the hours?",
     answer:
-      "Listed care hours are 7:00 AM to 6:00 PM on weekdays. Full-time, full-year care is mentioned in public listings. Confirm holidays, closures, and the schedule available to your family with Naila.",
+      "Noor Daycare is open from 7:30 AM to 6:00 PM on weekdays. Confirm holidays, closures, and the schedule available to your family with Naila during your visit.",
   },
   {
     question: "Is this a licensed home daycare?",
     answer:
-      "Yes. Ahmad, Naila is listed as a licensed Family Child Care Learning Home in Lawrenceville, Georgia. A visit is a good time to review the current license and discuss supervision and the spaces children use.",
+      "Yes. Noor Daycare is run by Naila Ahmad, who is listed as a licensed Family Child Care Learning Home provider under Ahmad, Naila in Lawrenceville, Georgia. A visit is a good time to review the current license and discuss supervision and the spaces children use.",
   },
   {
     question: "What about tuition, meals, and family support?",
@@ -184,16 +182,12 @@ function PreviewPhoto({
 }
 function Brand() {
   return (
-    <a
-      className="brand"
-      href="#top"
-      aria-label="Naila Ahmad Family Child Care home"
-    >
+    <a className="brand" href="#top" aria-label="Noor Daycare home">
       <span className="brand-mark">
         <House size={27} strokeWidth={2.3} aria-hidden="true" />
       </span>
       <span>
-        <strong>Naila Ahmad</strong>
+        <strong>Noor Daycare</strong>
         <small>Family Child Care</small>
       </span>
     </a>
@@ -288,7 +282,12 @@ export default function Home() {
             <a href="#day">A day here</a>
             <a href="#questions">Parent questions</a>
           </nav>
-          <a className="button header-cta" href="#contact">
+          <a
+            className="button header-cta"
+            href={BOOKING_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             <CalendarDays size={18} aria-hidden="true" /> Schedule a visit
           </a>
           <button
@@ -313,9 +312,15 @@ export default function Home() {
             ["#programs", "Ages & care"],
             ["#day", "A day here"],
             ["#questions", "Parent questions"],
-            ["#contact", "Schedule a visit"],
+            [BOOKING_URL, "Schedule a visit"],
           ].map(([href, label]) => (
-            <a key={href} href={href} onClick={() => setMenuOpen(false)}>
+            <a
+              key={href}
+              href={href}
+              target={href === BOOKING_URL ? "_blank" : undefined}
+              rel={href === BOOKING_URL ? "noopener noreferrer" : undefined}
+              onClick={() => setMenuOpen(false)}
+            >
               {label}
               <ArrowRight size={18} aria-hidden="true" />
             </a>
@@ -338,7 +343,7 @@ export default function Home() {
               <MapPin size={16} aria-hidden="true" /> Lawrenceville, Georgia
             </p>
             <h1 id="hero-title">
-              Naila Ahmad<span>Family Child Care</span>
+              Noor Daycare<span>Family Child Care</span>
             </h1>
             <p className="hero-tagline">
               Little days. <br />
@@ -351,7 +356,9 @@ export default function Home() {
             </p>
             <a
               className="button button-red hero-visit"
-              href="#contact"
+              href={BOOKING_URL}
+              target="_blank"
+              rel="noopener noreferrer"
               ref={heroVisitLink}
             >
               <CalendarDays size={20} aria-hidden="true" /> Schedule a visit
@@ -372,10 +379,10 @@ export default function Home() {
               <ShieldCheck aria-hidden="true" /> Licensed family child care
             </span>
             <span>
-              <Clock3 aria-hidden="true" /> 7:00 AM - 6:00 PM
+              <Clock3 aria-hidden="true" /> 7:30 AM - 6:00 PM
             </span>
             <span>
-              <Heart aria-hidden="true" /> Infants through school age
+              <Heart aria-hidden="true" /> 8 weeks through 4 years
             </span>
           </div>
         </div>
@@ -401,9 +408,9 @@ export default function Home() {
                 to learn together.
               </p>
               <p>
-                Naila Ahmad Family Child Care is a licensed home daycare in
-                Lawrenceville, welcoming children from infancy through school
-                age.
+                Noor Daycare is a licensed home daycare run by Naila Ahmad in
+                Lawrenceville, welcoming children from 8 weeks through 4 years
+                old.
               </p>
               <div className="about-detail">
                 <House aria-hidden="true" />
@@ -425,8 +432,8 @@ export default function Home() {
               <p className="eyebrow">Little people, different stages</p>
               <h2>Growing at their own pace.</h2>
               <p>
-                From first discoveries to school-day stories, there&apos;s a lot
-                of growing to do.
+                From first discoveries to preschool adventures, there&apos;s a
+                lot of growing to do.
               </p>
             </div>
             <div className="age-tabs" role="tablist" aria-label="Age groups">
@@ -493,7 +500,12 @@ export default function Home() {
                 Wondering if we&apos;re the right fit?{" "}
                 <strong>Let&apos;s meet.</strong>
               </p>
-              <a className="button button-red" href="#contact">
+              <a
+                className="button button-red"
+                href={BOOKING_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 <CalendarDays size={18} aria-hidden="true" /> Schedule a visit
               </a>
             </div>
@@ -513,15 +525,12 @@ export default function Home() {
                 </h2>
               </div>
               <p>
-                An example of how a day might unfold. Routines flex with
-                children&apos;s ages, naps, and the weather.
+                Our daily rhythm, from a warm welcome to a happy goodbye.
+                Activities follow this order, with timing adapted to
+                children&apos;s needs.
               </p>
             </div>
-            <div
-              className="day-tabs"
-              role="tablist"
-              aria-label="Example daily routine"
-            >
+            <div className="day-tabs" role="tablist" aria-label="Daily routine">
               {moments.map((item, index) => {
                 const Icon = item.icon;
                 return (
@@ -559,7 +568,11 @@ export default function Home() {
               <div className="day-story">
                 <p className="eyebrow">{moment.time}</p>
                 <h3>{moment.title}</h3>
-                <p>{moment.text}</p>
+                <ol className="day-activities">
+                  {moment.activities.map((activity) => (
+                    <li key={activity}>{activity}</li>
+                  ))}
+                </ol>
                 <div className="day-step-controls">
                   <span>
                     {momentIndex + 1} of {moments.length} moments
@@ -647,20 +660,16 @@ export default function Home() {
               <CalendarDays size={32} aria-hidden="true" />
               <h3 id="visit-booking-title">Schedule a visit</h3>
               <p>We&apos;d love to meet your family.</p>
-              <div className="booking-placeholder">
-                <strong>Online scheduling coming soon</strong>
-                <p>
-                  You&apos;ll be able to arrange a visit here once booking
-                  opens.
-                </p>
-              </div>
-              <button
-                className="button booking-unavailable"
-                type="button"
-                disabled
+              <CalendlyBooking />
+              <a
+                className="text-link booking-direct"
+                href={BOOKING_URL}
+                target="_blank"
+                rel="noopener noreferrer"
               >
-                <CalendarDays size={18} aria-hidden="true" /> Booking opens soon
-              </button>
+                Open booking in a new tab{" "}
+                <ArrowRight size={18} aria-hidden="true" />
+              </a>
             </div>
           </div>
         </section>
@@ -669,7 +678,9 @@ export default function Home() {
         <div className="container footer-top">
           <Brand />
           <nav aria-label="Footer navigation">
-            <a href="#contact">Schedule a visit</a>
+            <a href={BOOKING_URL} target="_blank" rel="noopener noreferrer">
+              Schedule a visit
+            </a>
             <a href="#programs">Ages & care</a>
             <a href="#day">A day here</a>
             <a href="#questions">Parent questions</a>
@@ -679,15 +690,18 @@ export default function Home() {
           </a>
         </div>
         <div className="container footer-bottom">
-          <span>
-            &copy; {new Date().getFullYear()} Naila Ahmad Family Child Care
-          </span>
+          <span>&copy; {new Date().getFullYear()} Noor Daycare</span>
           <span>Photos are previews, not the actual daycare.</span>
         </div>
       </footer>
       <div className="mobile-visit-dock" hidden={!showVisitDock || menuOpen}>
         <span>Come say hello.</span>
-        <a className="button button-red" href="#contact">
+        <a
+          className="button button-red"
+          href={BOOKING_URL}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
           <CalendarDays size={18} aria-hidden="true" /> Schedule a visit
         </a>
       </div>

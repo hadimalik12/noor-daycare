@@ -429,7 +429,7 @@ h1 span {
 }
 .age-tabs {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 13px;
 }
 .age-tab {
@@ -592,7 +592,21 @@ h1 span {
   padding: 45px 50px;
   display: flex;
   flex-direction: column;
-  min-height: 350px;
+  min-height: 410px;
+}
+.day-activities {
+  margin: 5px 0 0;
+  padding-left: 22px;
+  display: grid;
+  gap: 12px;
+  font-size: 16px;
+}
+.day-activities li {
+  padding-left: 5px;
+}
+.day-activities li::marker {
+  font-weight: 700;
+  color: var(--blue);
 }
 .day-story h3 {
   max-width: 350px;
@@ -710,9 +724,9 @@ h1 span {
 }
 .contact-layout {
   display: grid;
-  grid-template-columns: 1.15fr 1fr;
+  grid-template-columns: minmax(260px, 0.7fr) minmax(0, 1.5fr);
   align-items: center;
-  gap: 80px;
+  gap: 48px;
 }
 .visit-expectations {
   list-style: none;
@@ -734,7 +748,8 @@ h1 span {
 .visit-booking {
   background: var(--paper);
   color: var(--ink);
-  padding: 36px;
+  padding: 28px 20px;
+  min-width: 0;
   border-radius: 8px;
   border-top: 6px solid var(--yellow);
 }
@@ -749,28 +764,22 @@ h1 span {
 .visit-booking p {
   color: var(--muted);
 }
-.booking-placeholder {
-  margin-top: 25px;
-  padding-block: 23px;
-  border-block: 1px solid var(--line);
-}
-.booking-placeholder strong {
-  display: block;
-  font-size: 15px;
-  margin-bottom: 6px;
-}
-.booking-placeholder p {
-  font-size: 14px;
-}
-.booking-unavailable {
+.calendly-inline-widget {
+  min-width: 320px;
   width: 100%;
-  background: #e7eae5;
-  color: #58615b;
+  height: 700px;
   margin-top: 24px;
-  cursor: not-allowed;
 }
-.booking-unavailable:hover {
-  transform: none;
+.calendly-inline-widget iframe {
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+.booking-direct {
+  margin-top: 18px;
+}
+.booking-error {
+  padding-top: 24px;
 }
 .mobile-visit-dock {
   display: none;
@@ -868,6 +877,7 @@ h1 span {
 }
 @media (max-width: 900px) {
   .contact-layout {
+    grid-template-columns: 1fr;
     gap: 35px;
   }
   .visit-booking {
@@ -937,7 +947,7 @@ h1 span {
     gap: 36px;
   }
   .age-tabs {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
   .age-tab {
     padding: 20px;
@@ -995,7 +1005,15 @@ h1 span {
     gap: 32px;
   }
   .visit-booking {
-    padding: 25px;
+    padding: 25px 0;
+    margin-inline: -20px;
+    border-radius: 0;
+  }
+  .visit-booking > h3,
+  .visit-booking > p,
+  .visit-booking > svg,
+  .visit-booking > a {
+    margin-inline: 20px;
   }
   .mobile-visit-dock:not([hidden]) {
     display: flex;
@@ -1149,13 +1167,14 @@ h1 span {
   }
   .age-tabs {
     gap: 9px;
+    grid-template-columns: 1fr;
   }
   .age-tab {
-    min-height: 122px;
+    min-height: 90px;
     padding: 13px;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 9px;
+    flex-direction: row;
+    align-items: center;
+    gap: 16px;
   }
   .age-tab > svg:first-child {
     width: 25px;
@@ -1209,7 +1228,7 @@ h1 span {
     aspect-ratio: 4 / 3;
   }
   .day-story {
-    min-height: 340px;
+    min-height: 400px;
     padding: 28px;
   }
   .questions-grid {

@@ -13,9 +13,9 @@ const displayFont = Fredoka({
 });
 
 export const metadata: Metadata = {
-  title: "Naila Ahmad Family Child Care | Lawrenceville, GA",
+  title: "Noor Daycare | Lawrenceville, GA",
   description:
-    "Licensed home day care in Lawrenceville, GA serving infants, toddlers, preschoolers, and school-age children.",
+    "Noor Daycare is a licensed home daycare in Lawrenceville, GA for children ages 8 weeks through 4 years. Open weekdays, 7:30 AM to 6:00 PM. Schedule a visit online.",
 };
 
 export default function RootLayout({
