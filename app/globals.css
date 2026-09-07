@@ -739,18 +739,6 @@ h1 span {
   font-size: 14px;
   color: var(--muted);
 }
-.program-visit {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 24px;
-  margin-top: 28px;
-  padding-top: 28px;
-  border-top: 1px solid #cdd8ed;
-}
-.program-visit .button {
-  flex-shrink: 0;
-}
 .contact-layout {
   display: grid;
   grid-template-columns: minmax(260px, 0.7fr) minmax(0, 1.5fr);
@@ -941,6 +929,10 @@ h1 span {
     min-height: 50px;
     border-bottom: 1px solid var(--line);
   }
+  .mobile-nav a:first-child {
+    color: var(--red);
+    font-weight: 700;
+  }
   .hero {
     height: 610px;
   }
@@ -979,14 +971,16 @@ h1 span {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
   .age-tab {
-    padding: 20px;
+    padding: 16px 10px;
     min-height: 96px;
+    flex-direction: column;
+    text-align: center;
   }
   .age-tab strong {
-    font-size: 24px;
+    font-size: 21px;
   }
   .tab-arrow {
-    display: block;
+    display: none;
   }
   .age-panel {
     gap: 35px;
@@ -1023,11 +1017,6 @@ h1 span {
 @media (max-width: 600px) {
   html {
     scroll-padding-bottom: 100px;
-  }
-  .program-visit {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 17px;
   }
   .contact-layout {
     grid-template-columns: 1fr;
@@ -1094,7 +1083,7 @@ h1 span {
   }
   .hero {
     min-height: 540px;
-    height: min(640px, calc(100svh - 120px));
+    height: auto;
   }
   .hero-photo {
     object-position: 64% bottom;
@@ -1110,6 +1099,7 @@ h1 span {
   }
   .hero-content {
     padding-top: 29px;
+    padding-bottom: 56px;
   }
   .hero .eyebrow {
     font-size: 12px;
@@ -1140,6 +1130,11 @@ h1 span {
   }
   .hero .button {
     margin-top: 21px;
+    width: 100%;
+    max-width: 340px;
+    font-size: 16px;
+    gap: 10px;
+    padding-inline: 14px;
   }
   .hero-scroll {
     margin-top: 21px;
@@ -1204,6 +1199,7 @@ h1 span {
     flex-direction: row;
     align-items: center;
     gap: 16px;
+    text-align: left;
   }
   .age-tab > svg:first-child {
     width: 25px;
@@ -1236,18 +1232,37 @@ h1 span {
     margin-bottom: 25px;
   }
   .day-tabs {
-    grid-template-columns: repeat(5, minmax(106px, 1fr));
-    overflow-x: auto;
-    overscroll-behavior-x: contain;
-    padding-bottom: 2px;
-    scrollbar-width: thin;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    grid-auto-rows: minmax(116px, auto);
+    gap: 8px;
+    border-bottom: 0;
     margin-bottom: 24px;
   }
   .day-tabs button {
-    padding: 13px 10px;
+    grid-column: span 2;
+    min-width: 0;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 6px;
+    margin-bottom: 0;
+    border: 2px solid var(--line);
+    border-radius: 6px;
+    text-align: center;
+  }
+  .day-tabs button:nth-child(n + 4) {
+    grid-column: span 3;
+  }
+  .day-tabs button[aria-selected="true"] {
+    border-color: var(--blue);
+  }
+  .day-tabs button > svg {
+    width: 20px;
+    height: 20px;
   }
   .day-tabs strong {
-    font-size: 13px;
+    font-size: 14px;
+    line-height: 1.3;
+    margin-top: 3px;
   }
   .day-panel {
     grid-template-columns: 1fr;
@@ -1257,8 +1272,12 @@ h1 span {
     aspect-ratio: 4 / 3;
   }
   .day-story {
-    min-height: 400px;
-    padding: 28px;
+    order: -1;
+    min-height: 360px;
+    padding: 24px;
+  }
+  .day-story h3 {
+    font-size: 28px;
   }
   .questions-grid {
     gap: 28px;
@@ -1292,6 +1311,17 @@ h1 span {
     flex-direction: column;
     gap: 8px;
   }
+  .text-link,
+  .hero-scroll,
+  .back-top,
+  .site-footer nav a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+  }
+  .site-footer {
+    padding-bottom: calc(100px + env(safe-area-inset-bottom));
+  }
 }
 @media (max-width: 359px) {
   h1 {
@@ -1304,8 +1334,7 @@ h1 span {
     font-size: 24px;
   }
   .hero .button {
-    font-size: 13px;
-    padding-inline: 16px;
+    font-size: 15px;
   }
   .age-tab {
     padding: 11px;

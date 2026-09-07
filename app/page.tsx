@@ -62,7 +62,7 @@ const programs = [
     note: "Talk with Naila about your toddler's routines, comfort items, and current stage of development.",
   },
   {
-    name: "Preschool",
+    name: "Preschoolers",
     range: "3-4 years",
     icon: Palette,
     color: "green",
@@ -211,17 +211,16 @@ export default function Home() {
     const contact = visitSection.current;
     if (!heroLink || !contact) return;
     let heroPassed = false;
-    let contactReached = false;
+    let contactVisible = false;
     const observer = new IntersectionObserver(
       (entries) => {
         for (const entry of entries) {
           if (entry.target === heroLink)
             heroPassed = entry.boundingClientRect.bottom < 90;
           if (entry.target === contact)
-            contactReached =
-              entry.isIntersecting || entry.boundingClientRect.bottom < 0;
+            contactVisible = entry.isIntersecting;
         }
-        setShowVisitDock(heroPassed && !contactReached);
+        setShowVisitDock(heroPassed && !contactVisible);
       },
       { rootMargin: "-90px 0px 0px 0px", threshold: 0 },
     );
@@ -232,13 +231,6 @@ export default function Home() {
 
   function selectMoment(index: number) {
     setMomentIndex(index);
-    const tab = document.getElementById(`day-${index}`);
-    const list = tab?.parentElement;
-    if (tab && list) {
-      list.scrollTo({
-        left: tab.offsetLeft - (list.clientWidth - tab.offsetWidth) / 2,
-      });
-    }
   }
 
   function tabKeys(
@@ -309,11 +301,11 @@ export default function Home() {
           hidden={!menuOpen}
         >
           {[
+            [BOOKING_URL, "Schedule a visit"],
             ["#about", "Our little home"],
             ["#programs", "Ages & care"],
             ["#day", "A day here"],
             ["#questions", "Parent questions"],
-            [BOOKING_URL, "Schedule a visit"],
           ].map(([href, label]) => (
             <a
               key={href}
@@ -496,20 +488,6 @@ export default function Home() {
                 <p>{program.note}</p>
               </div>
             </div>
-            <div className="program-visit">
-              <p>
-                Wondering if we&apos;re the right fit?{" "}
-                <strong>Let&apos;s meet.</strong>
-              </p>
-              <a
-                className="button button-red"
-                href={BOOKING_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <CalendarDays size={18} aria-hidden="true" /> Schedule a visit
-              </a>
-            </div>
           </div>
         </section>
         <section className="section day-section" id="day">
@@ -593,40 +571,6 @@ export default function Home() {
             </div>
           </div>
         </section>
-        <section className="section questions-section" id="questions">
-          <div className="container questions-grid">
-            <div>
-              <p className="eyebrow">For the grown-ups</p>
-              <h2>
-                Little questions.
-                <br />
-                Big decisions.
-              </h2>
-              <p>
-                Choosing care is personal.
-                <br />
-                Here are a few things to start with.
-              </p>
-              <Heart
-                className="questions-heart"
-                size={64}
-                strokeWidth={1.6}
-                aria-hidden="true"
-              />
-            </div>
-            <div className="faq-list">
-              {faqs.map((faq) => (
-                <details key={faq.question}>
-                  <summary>
-                    {faq.question}
-                    <ChevronDown size={21} aria-hidden="true" />
-                  </summary>
-                  <p>{faq.answer}</p>
-                </details>
-              ))}
-            </div>
-          </div>
-        </section>
         <section className="contact-section" id="contact" ref={visitSection}>
           <div className="container contact-layout">
             <div className="contact-inner">
@@ -672,6 +616,40 @@ export default function Home() {
                 Open booking in a new tab{" "}
                 <ArrowRight size={18} aria-hidden="true" />
               </a>
+            </div>
+          </div>
+        </section>
+        <section className="section questions-section" id="questions">
+          <div className="container questions-grid">
+            <div>
+              <p className="eyebrow">For the grown-ups</p>
+              <h2>
+                Little questions.
+                <br />
+                Big decisions.
+              </h2>
+              <p>
+                Choosing care is personal.
+                <br />
+                Here are a few things to start with.
+              </p>
+              <Heart
+                className="questions-heart"
+                size={64}
+                strokeWidth={1.6}
+                aria-hidden="true"
+              />
+            </div>
+            <div className="faq-list">
+              {faqs.map((faq) => (
+                <details key={faq.question}>
+                  <summary>
+                    {faq.question}
+                    <ChevronDown size={21} aria-hidden="true" />
+                  </summary>
+                  <p>{faq.answer}</p>
+                </details>
+              ))}
             </div>
           </div>
         </section>
