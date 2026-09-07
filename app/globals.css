@@ -203,9 +203,6 @@ p {
     background 180ms,
     transform 180ms;
 }
-.button:hover {
-  transform: translateY(-2px);
-}
 .header-cta {
   background: var(--red);
   color: white;
@@ -233,8 +230,26 @@ p {
   background: transparent;
 }
 .menu-toggle,
-.mobile-nav {
+.mobile-menu-overlay {
   display: none;
+}
+.menu-toggle svg {
+  grid-area: 1 / 1;
+  transition:
+    opacity 180ms ease,
+    transform 240ms ease;
+}
+.menu-close-icon {
+  opacity: 0;
+  transform: rotate(-45deg) scale(0.8);
+}
+.menu-toggle[aria-expanded="true"] .menu-open-icon {
+  opacity: 0;
+  transform: rotate(45deg) scale(0.8);
+}
+.menu-toggle[aria-expanded="true"] .menu-close-icon {
+  opacity: 1;
+  transform: rotate(0) scale(1);
 }
 .hero {
   position: relative;
@@ -466,9 +481,6 @@ h1 span {
 }
 .age-tab > svg:first-child {
   color: var(--accent);
-}
-.age-tab:hover {
-  transform: translateY(-3px);
 }
 .age-tab[aria-selected="true"] {
   border-color: var(--ink);
@@ -841,6 +853,53 @@ h1 span {
     transform: translateY(0);
   }
 }
+:is(
+  .button,
+  .icon-button,
+  .age-tab,
+  .day-tabs button,
+  .phone-contact-control,
+  .text-link,
+  .hero-scroll,
+  .back-top,
+  .mobile-nav a,
+  .faq-list summary
+) {
+  transition:
+    background-color 220ms ease,
+    color 220ms ease,
+    border-color 220ms ease,
+    box-shadow 220ms ease,
+    transform 220ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+:is(
+  .button,
+  .icon-button,
+  .age-tab,
+  .day-tabs button,
+  .phone-contact-control
+):active {
+  transform: scale(0.98);
+  box-shadow: none;
+  transition-duration: 90ms;
+}
+:is(.text-link, .hero-scroll, .back-top, .mobile-nav a):active {
+  opacity: 0.75;
+}
+@media (hover: hover) and (pointer: fine) {
+  :is(.button, .icon-button, .age-tab, .phone-contact-control):hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 12px #26332f18;
+  }
+  :is(.button, .icon-button, .age-tab, .phone-contact-control):active {
+    transform: translateY(0) scale(0.98);
+    box-shadow: none;
+  }
+  .mobile-nav a:hover {
+    background: #edf3ff;
+    color: var(--blue);
+  }
+}
 @media (min-width: 1600px) {
   .hero-content {
     width: min(1380px, calc(100% - 120px));
@@ -915,18 +974,59 @@ h1 span {
     border-radius: 6px;
     background: #f1f3ec;
   }
-  .mobile-nav:not([hidden]) {
+  .mobile-menu-overlay {
+    display: block;
+    position: absolute;
+    top: 100%;
+    inset-inline: 0;
+    height: calc(100dvh - 100%);
+    visibility: hidden;
+    opacity: 0;
+    pointer-events: none;
+    transition:
+      opacity 220ms ease,
+      visibility 0s linear 220ms;
+  }
+  .mobile-menu-overlay[data-open="true"] {
+    visibility: visible;
+    opacity: 1;
+    pointer-events: auto;
+    transition-delay: 0s;
+  }
+  .menu-backdrop {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+    padding: 0;
+    background: #26332f55;
+    cursor: default;
+    touch-action: none;
+  }
+  .mobile-nav {
+    position: relative;
     display: grid;
     padding: 8px 24px 18px;
     border-top: 1px solid var(--line);
-    max-height: calc(100svh - 80px);
+    background: var(--paper);
+    box-shadow: 0 14px 24px #26332f1a;
+    max-height: 100%;
     overflow: auto;
+    overscroll-behavior: contain;
+    transform: translateY(-8px);
+    transition: transform 240ms cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+  .mobile-menu-overlay[data-open="true"] .mobile-nav {
+    transform: translateY(0);
   }
   .mobile-nav a {
     display: flex;
     justify-content: space-between;
     align-items: center;
     min-height: 50px;
+    padding-inline: 10px;
+    border-radius: 4px;
     border-bottom: 1px solid var(--line);
   }
   .mobile-nav a:first-child {

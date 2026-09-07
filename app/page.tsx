@@ -206,6 +206,20 @@ export default function Home() {
   const program = programs[programIndex];
   const moment = moments[momentIndex];
 
+  function closeMenu() {
+    setMenuOpen(false);
+    menuButton.current?.focus();
+  }
+
+  useEffect(() => {
+    const desktop = window.matchMedia("(min-width: 901px)");
+    const closeOnDesktop = () => {
+      if (desktop.matches) setMenuOpen(false);
+    };
+    desktop.addEventListener("change", closeOnDesktop);
+    return () => desktop.removeEventListener("change", closeOnDesktop);
+  }, []);
+
   useEffect(() => {
     const heroLink = heroVisitLink.current;
     const contact = visitSection.current;
@@ -217,8 +231,7 @@ export default function Home() {
         for (const entry of entries) {
           if (entry.target === heroLink)
             heroPassed = entry.boundingClientRect.bottom < 90;
-          if (entry.target === contact)
-            contactVisible = entry.isIntersecting;
+          if (entry.target === contact) contactVisible = entry.isIntersecting;
         }
         setShowVisitDock(heroPassed && !contactVisible);
       },
@@ -260,10 +273,13 @@ export default function Home() {
       </a>
       <header
         className="site-header"
+        onBlur={(event) => {
+          if (!event.currentTarget.contains(event.relatedTarget))
+            setMenuOpen(false);
+        }}
         onKeyDown={(event) => {
           if (event.key === "Escape") {
-            setMenuOpen(false);
-            menuButton.current?.focus();
+            closeMenu();
           }
         }}
       >
@@ -291,34 +307,48 @@ export default function Home() {
             aria-controls="mobile-navigation"
             onClick={() => setMenuOpen(!menuOpen)}
           >
-            {menuOpen ? <X aria-hidden="true" /> : <Menu aria-hidden="true" />}
+            <Menu className="menu-open-icon" aria-hidden="true" />
+            <X className="menu-close-icon" aria-hidden="true" />
           </button>
         </div>
-        <nav
-          id="mobile-navigation"
-          className="mobile-nav"
-          aria-label="Mobile navigation"
-          hidden={!menuOpen}
+        <div
+          className="mobile-menu-overlay"
+          data-open={menuOpen}
+          aria-hidden={!menuOpen}
+          inert={!menuOpen}
         >
-          {[
-            [BOOKING_URL, "Schedule a visit"],
-            ["#about", "Our little home"],
-            ["#programs", "Ages & care"],
-            ["#day", "A day here"],
-            ["#questions", "Parent questions"],
-          ].map(([href, label]) => (
-            <a
-              key={href}
-              href={href}
-              target={href === BOOKING_URL ? "_blank" : undefined}
-              rel={href === BOOKING_URL ? "noopener noreferrer" : undefined}
-              onClick={() => setMenuOpen(false)}
-            >
-              {label}
-              <ArrowRight size={18} aria-hidden="true" />
-            </a>
-          ))}
-        </nav>
+          <button
+            type="button"
+            className="menu-backdrop"
+            aria-label="Close navigation"
+            tabIndex={-1}
+            onClick={closeMenu}
+          />
+          <nav
+            id="mobile-navigation"
+            className="mobile-nav"
+            aria-label="Mobile navigation"
+          >
+            {[
+              [BOOKING_URL, "Schedule a visit"],
+              ["#about", "Our little home"],
+              ["#programs", "Ages & care"],
+              ["#day", "A day here"],
+              ["#questions", "Parent questions"],
+            ].map(([href, label]) => (
+              <a
+                key={href}
+                href={href}
+                target={href === BOOKING_URL ? "_blank" : undefined}
+                rel={href === BOOKING_URL ? "noopener noreferrer" : undefined}
+                onClick={closeMenu}
+              >
+                {label}
+                <ArrowRight size={18} aria-hidden="true" />
+              </a>
+            ))}
+          </nav>
+        </div>
       </header>
       <main id="main">
         <section className="hero" id="top" aria-labelledby="hero-title">
