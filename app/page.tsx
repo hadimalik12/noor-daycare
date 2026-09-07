@@ -60,7 +60,7 @@ const programs = [
     details: [
       "Movement, music, and hands-on play",
       "Language and everyday independence",
-      "Patient potty training support when ready",
+      "Gentle help with early self-care routines",
     ],
   },
   {
@@ -144,7 +144,7 @@ const faqs = [
   {
     question: "Do you help with potty training?",
     answer:
-      "Yes. We offer patient support when your child is ready and coordinate with your routine at home.",
+      "Yes. Potty training support begins around 2.5 years old, when your child is ready, and we coordinate with your routine at home.",
   },
 ];
 
@@ -649,8 +649,8 @@ export default function Home() {
                   <Heart size={20} aria-hidden="true" />
                   <span>
                     Infant feeding and sleep follow individual needs. Bathroom
-                    breaks include patient potty training support when your
-                    child is ready.
+                    breaks include patient potty training support beginning
+                    around 2.5 years old, when your child is ready.
                   </span>
                 </p>
               </div>
