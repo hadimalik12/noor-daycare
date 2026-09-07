@@ -193,10 +193,10 @@ export default function Home() {
             continue;
           const animation = entry.target.animate(
             [
-              { transform: "translateY(12px)" },
+              { transform: "translateY(28px)" },
               { transform: "translateY(0)" },
             ],
-            { duration: 420, easing: "cubic-bezier(0.22, 1, 0.36, 1)" },
+            { duration: 650, easing: "cubic-bezier(0.22, 1, 0.36, 1)" },
           );
           animations.add(animation);
           animation.onfinish = () => animations.delete(animation);
