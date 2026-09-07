@@ -39,7 +39,10 @@ jobs:
           NEXT_PUBLIC_BASE_PATH: /noor-daycare
 
       - name: Preserve Next.js assets
-        run: touch out/.nojekyll
+        run: |
+          mkdir -p out/assets-v2
+          cp -R out/_next out/assets-v2/_next
+          touch out/.nojekyll
 
       - name: Upload site
         uses: actions/upload-pages-artifact@v3
