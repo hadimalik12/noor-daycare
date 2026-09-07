@@ -457,10 +457,6 @@ export default function Home() {
                   <br />A Family Child Care Learning Home in your community.
                 </span>
               </div>
-              <a className="text-link" href="#questions">
-                Get to know the basics{" "}
-                <ArrowRight size={18} aria-hidden="true" />
-              </a>
             </div>
           </div>
         </section>
