@@ -23,7 +23,7 @@ export function PhoneContact() {
           ref={callLink}
           className="phone-contact-control"
           href={`tel:+1${number}`}
-          aria-label={`Call Noor Daycare at ${number}`}
+          aria-label={`Call Malik's Daycare at ${number}`}
         >
           <Phone size={18} aria-hidden="true" />
           ({number.slice(0, 3)}) {number.slice(3, 6)}-{number.slice(6)}

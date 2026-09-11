@@ -13,7 +13,7 @@ const displayFont = Fredoka({
 });
 
 export const metadata: Metadata = {
-  title: "Noor Daycare | Lawrenceville, GA",
+  title: "Malik's Daycare | Lawrenceville, GA",
   description:
     "Small, licensed home daycare in Lawrenceville, GA, with a capacity of 6 children. Warm, personal care for ages 8 weeks–4 years. Weekdays, 7:30 AM–6:00 PM. Schedule a visit.",
 };

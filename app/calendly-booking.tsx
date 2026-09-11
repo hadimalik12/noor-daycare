@@ -28,7 +28,7 @@ export function CalendlyBooking() {
       if (!calendly) return;
       calendly.initInlineWidget({ url: BOOKING_URL, parentElement: element });
       const frame = element.querySelector("iframe");
-      if (frame) frame.title = "Schedule a visit to Noor Daycare";
+      if (frame) frame.title = "Schedule a visit to Malik's Daycare";
     };
     const fail = () => {
       if (!disposed) setFailed(true);

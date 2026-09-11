@@ -28,9 +28,9 @@ import { goToPageTop, resetInitialScroll } from "./scroll-navigation";
 const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
 
 const navigation = [
-  ["#about", "Why Noor"],
+  ["#about", "Why Malik's Daycare"],
   ["#programs", "Ages & care"],
-  ["#day", "A day at Noor"],
+  ["#day", "A day at Malik's Daycare"],
   ["#contact", "Visit & questions"],
 ];
 
@@ -132,7 +132,7 @@ const faqs = [
     answer: "Monday through Friday, 7:30 AM to 6:00 PM.",
   },
   {
-    question: "Is Noor licensed?",
+    question: "Is Malik's Daycare licensed?",
     answer:
       "Yes, through Bright from the Start. Credentials include CDA certification, CPR, and First Aid. Our home daycare has a capacity of 6 children.",
   },
@@ -153,7 +153,7 @@ function Brand({ onHome }: { onHome?: () => void }) {
     <a
       className="brand"
       href="#top"
-      aria-label="Noor Daycare home"
+      aria-label="Malik's Daycare home"
       onClick={(event) => {
         if (goToPageTop(event)) onHome?.();
       }}
@@ -162,7 +162,7 @@ function Brand({ onHome }: { onHome?: () => void }) {
         <House size={27} strokeWidth={2.3} aria-hidden="true" />
       </span>
       <span>
-        <strong>Noor Daycare</strong>
+        <strong>Malik&apos;s Daycare</strong>
         <small>Family Child Care</small>
       </span>
     </a>
@@ -390,14 +390,14 @@ export default function Home() {
               </p>
               <a className="hero-scroll" href="#about">
                 <ArrowDown size={17} aria-hidden="true" />
-                Get to know Noor
+                Get to know Malik&apos;s Daycare
               </a>
             </div>
             <div className="hero-visual">
               <figure className="preview-photo hero-photo">
                 <img
                   src={`${basePath}/images/playroom-preview.jpg?v=2`}
-                  alt="Preview of a bright playroom with toys and books; not Noor's actual daycare"
+                  alt="Preview of a bright playroom with toys and books; not Malik's Daycare's actual space"
                   width="1800"
                   height="1100"
                   fetchPriority="high"
@@ -450,7 +450,7 @@ export default function Home() {
           <div className="container">
             <div className="section-heading split-heading">
               <div>
-                <p className="eyebrow">Why families choose Noor</p>
+                <p className="eyebrow">Why families choose Malik&apos;s Daycare</p>
                 <h2 id="why-title">
                   Small enough to know
                   <br />
@@ -459,8 +459,8 @@ export default function Home() {
               </div>
               <p>
                 You want to leave knowing your child is in caring hands. At
-                Noor, a smaller home setting brings together the warmth they
-                need and the trust you need.
+                Malik&apos;s Daycare, a smaller home setting brings together the
+                warmth they need and the trust you need.
               </p>
             </div>
             <div className="reasons-grid">
@@ -492,8 +492,9 @@ export default function Home() {
                 </span>
                 <h3>Warmth within reach</h3>
                 <p>
-                  Families choose Noor for affordable care in a licensed home
-                  setting, with personal attention and familiar daily routines.
+                  Families choose Malik&apos;s Daycare for affordable care in a
+                  licensed home setting, with personal attention and familiar
+                  daily routines.
                 </p>
               </article>
             </div>
@@ -592,7 +593,7 @@ export default function Home() {
           <div className="container">
             <div className="section-heading split-heading">
               <div>
-                <p className="eyebrow">A day at Noor</p>
+                <p className="eyebrow">A day at Malik&apos;s Daycare</p>
                 <h2 id="day-title">
                   A rhythm they can
                   <br />
@@ -627,7 +628,7 @@ export default function Home() {
                 <figure className="preview-photo outdoor-photo">
                   <img
                     src={`${basePath}/images/outdoor-preview.jpg?v=2`}
-                    alt="Preview of an outdoor childcare play area; not Noor's actual outdoor space"
+                    alt="Preview of an outdoor childcare play area; not Malik's Daycare's actual outdoor space"
                     width="1000"
                     height="750"
                     loading="lazy"
@@ -738,7 +739,7 @@ export default function Home() {
           </a>
         </div>
         <div className="container footer-bottom">
-          <span>&copy; {new Date().getFullYear()} Noor Daycare</span>
+          <span>&copy; {new Date().getFullYear()} Malik&apos;s Daycare</span>
           <span>Photos are previews, not the actual daycare.</span>
         </div>
       </footer>
