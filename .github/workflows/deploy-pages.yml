@@ -36,7 +36,7 @@ jobs:
       - name: Build site
         run: npm run build:github
         env:
-          NEXT_PUBLIC_BASE_PATH: /noor-daycare
+          NEXT_PUBLIC_BASE_PATH: /maliks-daycare
 
       - name: Preserve Next.js assets
         run: |
